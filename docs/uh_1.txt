@@ -1,0 +1,1 @@
+As a user, i want to download images in publications from Ehentai, from pages i specify into my hard drive, without getting ip banned.
