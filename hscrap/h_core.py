@@ -4,6 +4,7 @@ Created on 21/02/2018
 @author: David
 '''
 import os
+import errno
 from hscrap.global_vars import GlobalVars
 class HCore():
     
@@ -25,3 +26,14 @@ class HCore():
             if url.find(domain) > 0:
                 return
         raise Exception("Not a supported site found")
+    
+    def create_output_dir(self,path,dir_name):
+        """Creates a directory according to path and folder name"""
+        try:
+            #This bullshit right here is to remove character that arent supported in directory names. I got lazy and copy pasted themselves :P
+            dir_name = dir_name.replace("|"," ").replace("<"," ").replace(">", " ").replace(":", " ").replace("\"", " ").replace("\\", " ")
+            dir_name = dir_name.replace("/"," ").replace("?"," ").replace("*", " ")
+            os.makedirs(path+dir_name)
+        except OSError as e:
+            if e.errno != errno.EEXIST:
+                raise

@@ -1,12 +1,12 @@
 '''
 Created on 23/02/2018
 
-@author: David
+@author: XrossFox
 '''
 
 class WebRetriever(object):
     '''
-    Class that contains page retrieval methods for each domain. ()
+    Class that contains page retrieval methods for web items.
     '''
 
 

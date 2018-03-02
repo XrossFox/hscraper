@@ -74,6 +74,8 @@ class Test(unittest.TestCase):
             url = "https://e-hentai.org/"
             no_pages = "im an str"
             i.user_input(url, no_pages)
+            
+    
     
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
