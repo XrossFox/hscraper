@@ -8,6 +8,7 @@ class GlobalVars():
         self._url = ""
         self._no_pages = 0
         self._out_path = ""
+        self._wait_time = 1
         
     def set_url(self,url):
         """Sets url attribute"""
@@ -42,3 +43,14 @@ class GlobalVars():
     def get_out_path(self):
         """Returns no_pages attribute value"""
         return self._out_path
+    
+    def set_wait_time(self,wait_time):
+        """Sets no_pages attribute"""
+        if isinstance(wait_time, int):
+            self._wait_time = int(wait_time)
+        else:
+            raise Exception("Not an int instance")
+    
+    def get_wait_time(self):
+        """Returns no_pages attribute value"""
+        return self._wait_time

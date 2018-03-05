@@ -52,6 +52,21 @@ class Test(unittest.TestCase):
         with self.assertRaises(Exception):
             var_to_set = 15
             g_ref.set_out_path(var_to_set)
+            
+    def test_global_vars_wait_time_setter_getter(self):
+        """Tests getter and setter of no_pages attribute"""
+        g_ref = hscrap.global_vars.GlobalVars()
+        var_to_set = 1
+        g_ref.set_wait_time(var_to_set)
+        self.assertEqual(g_ref.get_wait_time(), var_to_set)
+    
+    def test_set_wait_time_only_accepts_int(self):
+        """Tests that it only accepts int instances, and raises Exception"""
+        g_ref = hscrap.global_vars.GlobalVars()
+        with self.assertRaises(Exception):
+            var_to_set = "hi!"
+            g_ref.set_wait_time(var_to_set)
+            
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

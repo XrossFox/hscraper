@@ -4,6 +4,7 @@ Created on 21/02/2018
 @author: XrossFox
 '''
 import unittest
+import os
 from hscrap import h_core
 
 class Test(unittest.TestCase):
@@ -75,7 +76,15 @@ class Test(unittest.TestCase):
             no_pages = "im an str"
             i.user_input(url, no_pages)
             
-    
+    def test_create_dir_creates_dir(self):
+        """Test for creating directories"""
+        path = os.path.dirname(__file__)+"\\"
+        name = "test"
+        dir = h_core.HCore()
+        dir.create_output_dir(path,name)
+        self.assertTrue(os.path.isdir(path+name))
+        os.rmdir(path+name)
+        
     
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
