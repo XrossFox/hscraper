@@ -48,7 +48,26 @@ class WebRetriever():
             text = data.decode('utf-8')
             html_data.append(text)
             time.sleep(wait)
+        return html_data
+
+    def retrieve_r34(self,url,pages,wait=1):
+        """Retrieves page/s from Danbooru."""
+        #request data for retrieval
+        html_data = list()
+        req = Request(url,headers={'User-Agent': 'Mozilla/5.0'})
+        for l_pages in range(pages):
+            if l_pages > 0:
+                mid_url = url+"&pid="+str(42*l_pages)
+                req = Request(mid_url,headers={'User-Agent': 'Mozilla/5.0'})
+                print("Retrieved: "+mid_url)
+            else:
+                mid_url = url+"&pid="+str(42*l_pages)
+                req = Request(mid_url,headers={'User-Agent': 'Mozilla/5.0'})
+                print("Retrieved: "+url)
+            data = urlopen(req).read()
+            text = data.decode('utf-8')
+            html_data.append(text)
+            time.sleep(wait)
         return html_data    
-    
     
         

@@ -53,6 +53,26 @@ class Test(unittest.TestCase):
         data = WebRetriever().retrieve_danbooru(url,pages)
         self.assertTrue(isinstance(data, list))
         self.assertIn("touhou - Danbooru", data[0])
+        
+    #-------------------------------
+    
+    def test_retrieve_from_r34_2_pages(self):
+        """Tests that it returns a list of the pages, with the HTML code of each page. Test with 2 pages to retrieve"""
+        pages = 2
+        url = "https://rule34.xxx/index.php?page=post&s=list&tags=dandon_fuga+"
+        data = WebRetriever().retrieve_r34(url,pages)
+        self.assertTrue(isinstance(data, list))
+        #Tests for title tag
+        self.assertIn("Rule 34  / dandon_fuga ", data[0])
+        self.assertIn("Rule 34  / dandon_fuga ", data[1])
+    
+    def test_retrieve_from_r34_1_page(self):
+        """Tests that it returns a list of the pages, with the HTML code of each page. Test with 1 page to retrieve"""
+        pages = 1
+        url = "https://rule34.xxx/index.php?page=post&s=list&tags=dandon_fuga+"
+        data = WebRetriever().retrieve_r34(url,pages)
+        self.assertTrue(isinstance(data, list))
+        self.assertIn("Rule 34  / dandon_fuga ", data[0])    
 
     
 if __name__ == "__main__":
