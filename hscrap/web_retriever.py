@@ -11,30 +11,44 @@ class WebRetriever():
     '''
     Class that contains page retrieval methods for web items.
     '''
-
-    def __init__(self, globalatts):
-        '''
-        Constructor
-        '''
-        if not isinstance(globalatts, GlobalVars):
-            raise Exception("Not an instance of GlobalVars")
-        self.globalatts = globalatts
         
-    def retrieve_ehentai(self):
-        """Recupera la/s pagina/s de la publicacion."""
+    def retrieve_ehentai(self,url,pages,wait=1):
+        """Retrieves page/s from ehentai.org."""
         #request data for retrieval
         html_data = list()
-        req = Request(self.globalatts.get_url(),headers={'User-Agent': 'Mozilla/5.0'})
-        for l_pages in range(self.globalatts.get_no_pages()):
+        req = Request(url,headers={'User-Agent': 'Mozilla/5.0'})
+        for l_pages in range(pages):
             if l_pages > 0:
-                req = Request(self.globalatts.get_url()+'?p='+str(l_pages),headers={'User-Agent': 'Mozilla/5.0'})
+                req = Request(url+'?p='+str(l_pages),headers={'User-Agent': 'Mozilla/5.0'})
+                print("Retrieved: "+url+'?p='+str(l_pages)+" page: "+str(l_pages+1))
             else:
-                req = Request(self.globalatts.get_url(),headers={'User-Agent': 'Mozilla/5.0'})
+                req = Request(url,headers={'User-Agent': 'Mozilla/5.0'})
+                print("Retrieved: "+url+" page: "+str(l_pages+1))
             data = urlopen(req).read()
             text = data.decode('utf-8')
             html_data.append(text)
-            print("Retrieved: "+self.globalatts.get_url()+" page: "+str(l_pages+1))
-            time.sleep(self.globalatts.get_wait_time())
+            
+            time.sleep(wait)
         return html_data
+    
+    def retrieve_danbooru(self,url,pages,wait=1):
+        """Retrieves page/s from Danbooru."""
+        #request data for retrieval
+        html_data = list()
+        req = Request(url,headers={'User-Agent': 'Mozilla/5.0'})
+        for l_pages in range(pages):
+            if l_pages > 0:
+                mid_url = "?page={}&".join(url.split(sep="?")).format(l_pages+1)
+                req = Request(mid_url,headers={'User-Agent': 'Mozilla/5.0'})
+                print("Retrieved: "+mid_url+" page: "+str(l_pages+1))
+            else:
+                req = Request(url,headers={'User-Agent': 'Mozilla/5.0'})
+                print("Retrieved: "+url+" page: "+str(l_pages+1))
+            data = urlopen(req).read()
+            text = data.decode('utf-8')
+            html_data.append(text)
+            time.sleep(wait)
+        return html_data    
+    
     
         
