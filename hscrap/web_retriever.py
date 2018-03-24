@@ -11,63 +11,54 @@ class WebRetriever():
     '''
     Class that contains page retrieval methods for web items.
     '''
-        
     def retrieve_ehentai(self,url,pages,wait=1):
         """Retrieves page/s from ehentai.org."""
         #request data for retrieval
-        html_data = list()
-        req = Request(url,headers={'User-Agent': 'Mozilla/5.0'})
+        url_lists = list()
         for l_pages in range(pages):
             if l_pages > 0:
-                req = Request(url+'?p='+str(l_pages),headers={'User-Agent': 'Mozilla/5.0'})
-                print("Retrieved: "+url+'?p='+str(l_pages)+" page: "+str(l_pages+1))
+                url_lists.append(url+'?p='+str(l_pages))
             else:
-                req = Request(url,headers={'User-Agent': 'Mozilla/5.0'})
-                print("Retrieved: "+url+" page: "+str(l_pages+1))
-            data = urlopen(req).read()
-            text = data.decode('utf-8')
-            html_data.append(text)
-            
-            time.sleep(wait)
-        return html_data
+                url_lists.append(url)
+        return self._retrieve_web_pages(url_lists)
     
     def retrieve_danbooru(self,url,pages,wait=1):
         """Retrieves page/s from Danbooru."""
         #request data for retrieval
-        html_data = list()
-        req = Request(url,headers={'User-Agent': 'Mozilla/5.0'})
+        url_lists = list()
         for l_pages in range(pages):
             if l_pages > 0:
-                mid_url = "?page={}&".join(url.split(sep="?")).format(l_pages+1)
-                req = Request(mid_url,headers={'User-Agent': 'Mozilla/5.0'})
-                print("Retrieved: "+mid_url+" page: "+str(l_pages+1))
+                url_lists.append("?page={}&".join(url.split(sep="?")).format(l_pages+1))
             else:
-                req = Request(url,headers={'User-Agent': 'Mozilla/5.0'})
-                print("Retrieved: "+url+" page: "+str(l_pages+1))
-            data = urlopen(req).read()
-            text = data.decode('utf-8')
-            html_data.append(text)
-            time.sleep(wait)
-        return html_data
-
+                url_lists.append(url)
+        return self._retrieve_web_pages(url_lists)
+    
     def retrieve_r34(self,url,pages,wait=1):
         """Retrieves page/s from Danbooru."""
         #request data for retrieval
-        html_data = list()
-        req = Request(url,headers={'User-Agent': 'Mozilla/5.0'})
+        url_lists = list()
         for l_pages in range(pages):
             if l_pages > 0:
-                mid_url = url+"&pid="+str(42*l_pages)
-                req = Request(mid_url,headers={'User-Agent': 'Mozilla/5.0'})
-                print("Retrieved: "+mid_url)
+                url_lists.append(url+"&pid="+str(42*l_pages))
             else:
-                mid_url = url+"&pid="+str(42*l_pages)
-                req = Request(mid_url,headers={'User-Agent': 'Mozilla/5.0'})
-                print("Retrieved: "+url)
-            data = urlopen(req).read()
-            text = data.decode('utf-8')
-            html_data.append(text)
-            time.sleep(wait)
-        return html_data    
+                url_lists.append(url+"&pid="+str(42*l_pages)) 
+        return self._retrieve_web_pages(url_lists)
     
+    def retrieve_hitomi_la(self,url,wait=1):
+        """Retrieves page from Hitomi.la, only one is needed, since it technically has no pagination."""
+        #request data for retrieval
+        url_lists = [url]
+        return self._retrieve_web_pages(url_lists)
         
+    def _retrieve_web_pages(self,url_list=[],wait=1):
+        '''Retrieves a list of htmls from a list of urls. Not meant to be called directly, but as a helper for
+        methods above'''
+        html_data = list()
+        for url in url_list:
+            req = Request(url,headers={'User-Agent': 'Mozilla/5.0'})
+            data = urlopen(req).read()
+            html = data.decode('utf-8')
+            html_data.append(html)
+            print("Retrieved: "+url)
+            time.sleep(wait)
+        return html_data

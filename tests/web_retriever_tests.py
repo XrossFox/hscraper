@@ -8,14 +8,6 @@ from hscrap import global_vars
 from hscrap.web_retriever import WebRetriever
 class Test(unittest.TestCase):
 
-
-    def test_init_throws_except_if_not_send_global_varaibles_instance(self):
-        """Checks that if sent a parameter that is not an instance of GlobalVars, an
-        exception is raised"""
-        
-        with self.assertRaises(Exception):
-            web = WebRetriever("web_retriever")
-
     #--------------------------------
     def test_retrieve_from_ehentai_2_pages(self):
         """Tests that it returns a list of the pages, with the HTML code of each page. Test with 2 pages to retrieve"""
@@ -72,8 +64,17 @@ class Test(unittest.TestCase):
         url = "https://rule34.xxx/index.php?page=post&s=list&tags=dandon_fuga+"
         data = WebRetriever().retrieve_r34(url,pages)
         self.assertTrue(isinstance(data, list))
-        self.assertIn("Rule 34  / dandon_fuga ", data[0])    
-
+        self.assertIn("Rule 34  / dandon_fuga ", data[0])
+        
+    #-------------------------------
+    
+    def test_retrieve_from_hitomi(self):
+        """Tests that it returns a list of the pages, with the HTML code of each page. Test with 2 pages to retrieve"""
+        url = "https://hitomi.la/galleries/1198858.html"
+        data = WebRetriever().retrieve_hitomi_la(url)
+        self.assertTrue(isinstance(data, list))
+        #Tests for title tag
+        self.assertIn("Hitozuma Club by homare - Read Online - hentai artistcg | Hitomi.la", data[0])    
     
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
