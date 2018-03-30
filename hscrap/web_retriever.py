@@ -34,7 +34,7 @@ class WebRetriever():
         return self._retrieve_web_pages(url_lists)
     
     def retrieve_r34(self,url,pages,wait=1):
-        """Retrieves page/s from Danbooru."""
+        """Retrieves page/s from r34."""
         #request data for retrieval
         url_lists = list()
         for l_pages in range(pages):
@@ -62,3 +62,6 @@ class WebRetriever():
             print("Retrieved: "+url)
             time.sleep(wait)
         return html_data
+    
+    
+    
