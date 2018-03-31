@@ -12,7 +12,7 @@ class WebRetriever():
     Class that contains page retrieval methods for web items.
     '''
     def retrieve_ehentai(self,url,pages,wait=1):
-        """Retrieves page/s from ehentai.org."""
+        """Retrieves page/s from ehentai.org as a list."""
         #request data for retrieval
         url_lists = list()
         for l_pages in range(pages):
@@ -23,7 +23,7 @@ class WebRetriever():
         return self._retrieve_web_pages(url_lists)
     
     def retrieve_danbooru(self,url,pages,wait=1):
-        """Retrieves page/s from Danbooru."""
+        """Retrieves page/s from Danbooru as a list."""
         #request data for retrieval
         url_lists = list()
         for l_pages in range(pages):
@@ -34,7 +34,7 @@ class WebRetriever():
         return self._retrieve_web_pages(url_lists)
     
     def retrieve_r34(self,url,pages,wait=1):
-        """Retrieves page/s from r34."""
+        """Retrieves page/s from r34 as a list."""
         #request data for retrieval
         url_lists = list()
         for l_pages in range(pages):
@@ -45,7 +45,8 @@ class WebRetriever():
         return self._retrieve_web_pages(url_lists)
     
     def retrieve_hitomi_la(self,url,wait=1):
-        """Retrieves page from Hitomi.la, only one is needed, since it technically has no pagination."""
+        """Retrieves page from Hitomi.la, only one is needed, since it technically has no pagination.
+        Also returns a list for consistency"""
         #request data for retrieval
         url_lists = [url]
         return self._retrieve_web_pages(url_lists)
