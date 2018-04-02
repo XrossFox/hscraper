@@ -44,7 +44,7 @@ class WebRetriever():
                 url_lists.append(url+"&pid="+str(42*l_pages)) 
         return self._retrieve_web_pages(url_lists)
     
-    def retrieve_hitomi_la(self,url,wait=1):
+    def retrieve_hitomi_la(self,url,wait=1,pages=1):
         """Retrieves page from Hitomi.la, only one is needed, since it technically has no pagination.
         Also returns a list for consistency"""
         #request data for retrieval
