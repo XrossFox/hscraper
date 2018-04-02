@@ -11,7 +11,7 @@ class HCore():
     def user_input(self,url,no_pages,output_path = os.path.dirname(__file__)+"\\"):
         """Receives url, number of pages and optional output path. Starts the process."""
         #Meant for process control, calls every other method that does the work.
-        #Must call in order: global_vars, web retriever, Scrapper.
+        #Must call in order: global_vars, web retriever, Scraper.
         g_ref = GlobalVars()
         
         #check url
