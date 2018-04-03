@@ -4,6 +4,7 @@ Created on 30/03/2018
 @author: XrossFox
 '''
 from bs4 import BeautifulSoup
+from hscrap import web_retriever
 
 class Scraper(object):
     '''
@@ -55,5 +56,65 @@ class Scraper(object):
         links = ["https://hitomi.la"+url_a+"#"+str(index+1) for index in range(len(tags))]
         return links
         
+    def scrap_post_ehentai(self,post_url,wait=1):
+        """Receives an url to an image post from ehentai, and looks for the image in it"""
+        #Downloads the html doc
+        #Then looks for the img tag with id=img
+        #Returns the src attribute of the img tag as a string
         
+        web = web_retriever.WebRetriever()
+        html = web.retrieve_web_page(post_url, wait)
         
+        soup = BeautifulSoup(html, "html.parser")
+        img_tag = soup.find(id="img")
+        img_url = img_tag.get("src")
+        return img_url
+    
+    def scrap_post_danbooru(self,post_url,wait=1):
+        """Receives an url to an image post from danbooru, and looks for the image in it"""
+        #Downloads the html doc
+        #Then looks for the img tag with id=image
+        #Returns the src attribute of the img tag as a string
+        
+        web = web_retriever.WebRetriever()
+        html = web.retrieve_web_page(post_url, wait)
+        
+        soup = BeautifulSoup(html, "html.parser")
+        img_tag = soup.find(id="image")
+        img_url = img_tag.get("src")
+        
+        #More relative urls, matey
+        return "http://danbooru.donmai.us"+img_url
+    
+    def scrap_post_r34(self,post_url,wait=1):
+        """Receives an url to an image post from danbooru, and looks for the image in it"""
+        #Downloads the html doc
+        #Then looks for the img tag with id=image
+        #Returns the src attribute of the img tag as a string
+        
+        web = web_retriever.WebRetriever()
+        html = web.retrieve_web_page(post_url, wait)
+        
+        soup = BeautifulSoup(html, "html.parser")
+        img_tag = soup.find(id="image")
+        img_url = img_tag.get("src")
+
+        return img_url
+    '''
+    def scrap_post_hitomi_la(self,post_url,wait=1):
+        """Receives an url to an image post from danbooru, and looks for the image in it"""
+        #Downloads the html doc
+        #Then looks for the img tag inside the div with id=comicImage
+        #Returns the src attribute of the img tag as a string
+        
+        web = web_retriever.WebRetriever()
+        html = web.retrieve_web_page(post_url, wait)
+        
+        soup = BeautifulSoup(html, "html.parser")
+        print(soup)
+        div = soup.find(id="comicImage")
+        img_tag = div.find("img")
+        img_url = img_tag.get("src")
+        
+        return img_url
+    '''    

@@ -4,8 +4,7 @@ Created on 23/02/2018
 @author: XrossFox
 '''
 
-from hscrap.global_vars import GlobalVars
-from urllib.request import Request, urlopen, urlretrieve
+from urllib.request import Request, urlopen
 import time
 class WebRetriever():
     '''
@@ -64,5 +63,13 @@ class WebRetriever():
             time.sleep(wait)
         return html_data
     
+    def retrieve_web_page(self,post_url,wait=1):
+        """Retrieves a html doc from the internet"""
+        req = Request(post_url,headers={'User-Agent': 'Mozilla/5.0'})
+        data = urlopen(req).read()
+        html = data.decode('utf-8')
+        print("Looking for: "+post_url)
+        time.sleep(wait)
+        return html
     
     

@@ -67,14 +67,20 @@ class Test(unittest.TestCase):
         self.assertIn("Rule 34  / dandon_fuga ", data[0])
         
     #-------------------------------
-    
+    '''
     def test_retrieve_from_hitomi(self):
         """Tests that it returns a list of the pages, with the HTML code of each page. Test with 2 pages to retrieve"""
         url = "https://hitomi.la/galleries/1198858.html"
         data = WebRetriever().retrieve_hitomi_la(url)
         self.assertTrue(isinstance(data, list))
         #Tests for title tag
-        self.assertIn("Hitozuma Club by homare - Read Online - hentai artistcg | Hitomi.la", data[0])    
+        self.assertIn("Hitozuma Club by homare - Read Online - hentai artistcg | Hitomi.la", data[0])
+    '''    
+    def test_retrieve_post(self):
+        """Retrieves an image post fron da internetz"""
+        post_url = "https://e-hentai.org/s/550514aad7/1178602-39"
+        web = WebRetriever()
+        web.retrieve_web_page(post_url)
     
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

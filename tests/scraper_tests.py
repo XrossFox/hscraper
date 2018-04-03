@@ -9,9 +9,9 @@ from hscrap.web_retriever import WebRetriever
 from urllib.request import Request, urlopen
 import time
 import random
+from hscrap import scraper
 
 class Test(unittest.TestCase):
-
 
     def test_module_exists(self):
         scr = Scraper()
@@ -76,7 +76,8 @@ class Test(unittest.TestCase):
         self.assertTrue(self._pull_html_for_acceptance(random.choice(links)))
         self.assertTrue(self._pull_html_for_acceptance(random.choice(links)))
         self.assertTrue(self._pull_html_for_acceptance(random.choice(links)))
-        
+    
+    '''    
     def test_scrap_hitomi_la(self):
         """
         -Donwloads an html page from hitomi.la.
@@ -96,15 +97,51 @@ class Test(unittest.TestCase):
         self.assertTrue(self._pull_html_for_acceptance(random.choice(links)))
         self.assertTrue(self._pull_html_for_acceptance(random.choice(links)))
         self.assertTrue(self._pull_html_for_acceptance(random.choice(links)))
-
-
+    '''
+    
+    
+    def test_scrap_post_ehentai(self):
+        """ - scrap_post must receive an url to a post with an image.
+            - then it must look for the url of the image, img tag with id=img (duh!).
+            - return the url collected from the src attribute.
+        """
+        post_url = "https://e-hentai.org/s/550514aad7/1178602-39"
+        img_url = Scraper().scrap_post_ehentai(post_url)
         
+        img = "038.jpg"
+        self.assertEqual(img, img_url.split("/")[-1])
+    
+        
+    def test_scrap_post_danbooru(self):
+        """ - scrap_post must receive an url to a post with an image.
+            - then it must look for the url of the image, img tag with id=image (double duh!).
+            - return the url collected from the src attribute.
+        """
+        post_url = "http://danbooru.donmai.us/posts/3074486"
+        img_url = Scraper().scrap_post_danbooru(post_url)
+        
+        img = "__inubashiri_momiji_touhou_drawn_by_leon_mikiri_hassha__de0d58fa4cd64df1a18f48a813c0a950.jpg"
+        self.assertEqual(img, img_url.split("/")[-1])
+    
+    
+    def test_scrap_post_r34(self):
+        """ - scrap_post must receive an url to a post with an image.
+            - then it must look for the url of the image, img tag with id=image (triple duh!).
+            - return the url collected from the src attribute.
+        """
+        post_url = "https://rule34.xxx/index.php?page=post&s=view&id=2710033"
+        img_url = Scraper().scrap_post_r34(post_url)
+        
+        img = "sample_12a523c3f02f7b8cbf87292ff99132cd.jpg?2710033"
+        self.assertEqual(img, img_url.split("/")[-1])
+    
+    
+    
     def _pull_html_for_acceptance(self,url):
         """Tries to pull an url from the web, if succeeds, returns true."""
         try:
             req = Request(url,headers={'User-Agent': 'Mozilla/5.0'})
             data = urlopen(req).read()
-            html = data.decode('utf-8')
             time.sleep(1)
             return True
         except:
