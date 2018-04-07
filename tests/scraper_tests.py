@@ -76,29 +76,26 @@ class Test(unittest.TestCase):
         self.assertTrue(self._pull_html_for_acceptance(random.choice(links)))
         self.assertTrue(self._pull_html_for_acceptance(random.choice(links)))
         self.assertTrue(self._pull_html_for_acceptance(random.choice(links)))
-    
-    '''    
-    def test_scrap_hitomi_la(self):
+  
+    def test_scrap_post_hitomi_la(self):
         """
-        -Donwloads an html page from hitomi.la.
+        -Donwloads an html page from hitomi.la READER.
         -Then, search for ul which CLASS is thumbnail-list.
         -Then extract every "a" tag href attribute inside it.
         -Returns a list of every link to the individual image posts.
         """
         
         pages = 1
-        url = "https://hitomi.la/galleries/1198858.html"
+        url = "https://hitomi.la/reader/1198858.html#5"
         data = WebRetriever().retrieve_hitomi_la(url,pages)
         
-        links = Scraper().scrap_hitomi_la(data[0])
+        links = Scraper().scrap_post_hitomi_la(data[0])
         
         self.assertTrue(self._pull_html_for_acceptance(random.choice(links)))
         self.assertTrue(self._pull_html_for_acceptance(random.choice(links)))
         self.assertTrue(self._pull_html_for_acceptance(random.choice(links)))
         self.assertTrue(self._pull_html_for_acceptance(random.choice(links)))
         self.assertTrue(self._pull_html_for_acceptance(random.choice(links)))
-    '''
-    
     
     def test_scrap_post_ehentai(self):
         """ - scrap_post must receive an url to a post with an image.
@@ -134,7 +131,6 @@ class Test(unittest.TestCase):
         
         img = "sample_12a523c3f02f7b8cbf87292ff99132cd.jpg?2710033"
         self.assertEqual(img, img_url.split("/")[-1])
-    
     
     
     def _pull_html_for_acceptance(self,url):

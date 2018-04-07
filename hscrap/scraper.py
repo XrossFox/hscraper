@@ -43,6 +43,7 @@ class Scraper(object):
         links = ["https://rule34.xxx/"+a.get("href") for a in tags]
         return links
         
+    '''    
     def scrap_hitomi_la(self,html_text):
         """Receives the hitomi.la hallery as html text. Returns a list of every image posts url."""
 
@@ -55,6 +56,7 @@ class Scraper(object):
         tags = div.find_all("li")
         links = ["https://hitomi.la"+url_a+"#"+str(index+1) for index in range(len(tags))]
         return links
+    '''
         
     def scrap_post_ehentai(self,post_url,wait=1):
         """Receives an url to an image post from ehentai, and looks for the image in it"""
@@ -100,21 +102,19 @@ class Scraper(object):
         img_url = img_tag.get("src")
 
         return img_url
-    '''
-    def scrap_post_hitomi_la(self,post_url,wait=1):
-        """Receives an url to an image post from danbooru, and looks for the image in it"""
+
+
+    def scrap_post_hitomi_la(self,html,wait=1):
+        """Receives an url to the reader from hitomi.la, and looks for all the image urls in it"""
         #Downloads the html doc
-        #Then looks for the img tag inside the div with id=comicImage
-        #Returns the src attribute of the img tag as a string
-        
-        web = web_retriever.WebRetriever()
-        html = web.retrieve_web_page(post_url, wait)
+        #Then look for every div which class is class=img-url
+        #Process the text inside the divs so it resembles a proper url
+        #Return al img urls
         
         soup = BeautifulSoup(html, "html.parser")
-        print(soup)
-        div = soup.find(id="comicImage")
-        img_tag = div.find("img")
-        img_url = img_tag.get("src")
-        
-        return img_url
-    '''    
+        #//g.hitomi.la/galleries/1198858/001.jpg
+        #https://0a.hitomi.la/galleries/1198858/001.jpg
+        divs = soup.find_all("div",class_="img-url")
+        texts = [div.text for div in divs]
+        urls = ["https://0a.hitomi.la/galleries/"+text.split(sep="/")[-2]+"/"+text.split(sep="/")[-1] for text in texts]
+        return urls

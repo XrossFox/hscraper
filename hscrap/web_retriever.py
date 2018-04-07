@@ -5,6 +5,7 @@ Created on 23/02/2018
 '''
 
 from urllib.request import Request, urlopen
+import requests
 import time
 class WebRetriever():
     '''
@@ -44,7 +45,7 @@ class WebRetriever():
         return self._retrieve_web_pages(url_lists)
     
     def retrieve_hitomi_la(self,url,wait=1,pages=1):
-        """Retrieves page from Hitomi.la, only one is needed, since it technically has no pagination.
+        """Retrieves page from Hitomi.la reader, only one is needed, since it technically has no pagination.
         Also returns a list for consistency"""
         #request data for retrieval
         url_lists = [url]
@@ -72,4 +73,18 @@ class WebRetriever():
         time.sleep(wait)
         return html
     
-    
+    def retrieve_image(self,img_url,path,wait=1):
+        retry = 3
+        while retry > 0:
+            try:
+                print("Saving to: "+path+"\\"+img_url.split("/")[-1])
+                req = Request(img_url,headers={'User-Agent': 'Mozilla/5.0'})
+                data = urlopen(req).read()
+                with open(path+"\\"+img_url.split("/")[-1], 'wb') as outfile:
+                    outfile.write(data)
+                break
+            except Exception as e:
+                print("Error, Retrying...")
+                retry -= 1
+                continue
+        time.sleep(wait)
