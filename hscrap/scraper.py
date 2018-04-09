@@ -10,7 +10,7 @@ class Scraper(object):
     '''
     Contains methods for html scraping and a tag retrieval.
     '''
-    
+    #---
     def scrap_ehentai(self,html_text):
         """Receives the ehentai gallery as html text. Returns a list of every image posts url."""
         
@@ -19,7 +19,7 @@ class Scraper(object):
         div = soup.find(id="gdt")
         tags = div.find_all("a")
         links = [a.get("href") for a in tags]
-        return links
+        return (soup.find("title").text,links)
     
     def scrap_danbooru(self,html_text):
         """Receives the danbooru search result as html text. Returns a list of every image posts url."""
@@ -30,7 +30,7 @@ class Scraper(object):
         tags = div.find_all("a")
         #These a tags contain a relative url, so the domain must be appended too
         links = ["http://danbooru.donmai.us"+a.get("href") for a in tags]
-        return links
+        return (soup.find("title").text,links)
     
     def scrap_r34(self,html_text):
         """Receives the r34 search result as html text. Returns a list of every image posts url."""
@@ -41,22 +41,8 @@ class Scraper(object):
         tags = div.find_all("a")
         #Also uses relative urls
         links = ["https://rule34.xxx/"+a.get("href") for a in tags]
-        return links
-        
-    '''    
-    def scrap_hitomi_la(self,html_text):
-        """Receives the hitomi.la hallery as html text. Returns a list of every image posts url."""
-
-        soup = BeautifulSoup(html_text,"html.parser")
-        #Look for div which ckass is cover, retrieve its a tag which has the url for the reader
-        url_div = soup.find("div",class_="cover")
-        url_a = url_div.find("a").get("href")
-        #Seek for post ul. Then look for every li tag inside it. We count the the li tags, and generate the urls from there.
-        div = soup.find("ul",class_="thumbnail-list")
-        tags = div.find_all("li")
-        links = ["https://hitomi.la"+url_a+"#"+str(index+1) for index in range(len(tags))]
-        return links
-    '''
+        return (soup.find("title").text,links)
+    #---    
         
     def scrap_post_ehentai(self,post_url,wait=1):
         """Receives an url to an image post from ehentai, and looks for the image in it"""
@@ -103,7 +89,8 @@ class Scraper(object):
 
         return img_url
 
-
+    #---
+    
     def scrap_post_hitomi_la(self,html,wait=1):
         """Receives an url to the reader from hitomi.la, and looks for all the image urls in it"""
         #Downloads the html doc
@@ -117,4 +104,4 @@ class Scraper(object):
         divs = soup.find_all("div",class_="img-url")
         texts = [div.text for div in divs]
         urls = ["https://0a.hitomi.la/galleries/"+text.split(sep="/")[-2]+"/"+text.split(sep="/")[-1] for text in texts]
-        return urls
+        return (soup.find("title").text,urls)

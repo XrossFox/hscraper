@@ -36,6 +36,7 @@ class HCore():
             dir_name = dir_name.replace("|"," ").replace("<"," ").replace(">", " ").replace(":", " ").replace("\"", " ").replace("\\", " ")
             dir_name = dir_name.replace("/"," ").replace("?"," ").replace("*", " ")
             os.makedirs(path+dir_name)
+            return path+dir_name
         except OSError as e:
             if e.errno != errno.EEXIST:
                 raise

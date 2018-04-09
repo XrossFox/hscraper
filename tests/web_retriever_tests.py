@@ -4,14 +4,13 @@ Created on 05/03/2018
 @author: David
 '''
 import unittest
-from hscrap import global_vars
 from hscrap.web_retriever import WebRetriever
 import os
 class Test(unittest.TestCase):
 
     #--------------------------------
     def test_retrieve_from_ehentai_2_pages(self):
-        """Tests that it returns a touple, (gallery name, list of the pages), with the HTML code of each page. Test with 2 pages to retrieve"""
+        """Tests that it returns a list of the pages, with the HTML code of each page. Test with 2 pages to retrieve"""
         pages = 2
         url = "https://e-hentai.org/g/1178602/df79f996bc/"
         data = WebRetriever().retrieve_ehentai(url,pages)
