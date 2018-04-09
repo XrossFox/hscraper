@@ -5,20 +5,66 @@ Created on 21/02/2018
 '''
 import os
 import errno
-from hscrap.global_vars import GlobalVars
+from hscrap import web_retriever
+from hscrap import scraper
 class HCore():
     
-    def user_input(self,url,no_pages,output_path = os.path.dirname(__file__)+"\\"):
+    def user_input(self,url,no_pages,output_path = os.path.dirname(__file__)+"\\",wait=1):
         """Receives url, number of pages and optional output path. Starts the process."""
         #Meant for process control, calls every other method that does the work.
-        #Must call in order: global_vars, web retriever, Scraper.
-        g_ref = GlobalVars()
         
         #check url
-        g_ref.set_url(url)
         self._check_url_domain(url)
-        g_ref.set_no_pages(no_pages)
-        return g_ref
+        #get htmls
+        html_list = self._generate_links(url, no_pages, wait)
+        #img posts
+        img_posts = self._get_img_posts(url,html_list)
+        #create output dir and download images
+     
+    def _get_images(self,url,img_posts=[]):
+        """Discriminates between domains to call the apropiate img post scraper"""
+        if("https://e-hentai.org/" in url):
+            return scraper.Scraper.scrap_
+        if("http://danbooru.donmai.us" in url):
+            return web_retriever.WebRetriever().retrieve_danbooru(url, no_pages, wait)
+        if("https://rule34.xxx/" in url):
+            return web_retriever.WebRetriever().retrieve_r34(url, no_pages, wait)
+        if("https://hitomi.la/" in url):
+            return [-1]
+        raise Exception("Not a proper url to generate was received")        
+        
+    def _generate_links(self,url,no_pages,wait):
+        """Discriminates between domains to call the apropiate link generator"""
+        if("https://e-hentai.org/" in url):
+            return web_retriever.WebRetriever().retrieve_ehentai(url, no_pages, wait)
+        if("http://danbooru.donmai.us" in url):
+            return web_retriever.WebRetriever().retrieve_danbooru(url, no_pages, wait)
+        if("https://rule34.xxx/" in url):
+            return web_retriever.WebRetriever().retrieve_r34(url, no_pages, wait)
+        if("https://hitomi.la/" in url):
+            return [-1]
+        raise Exception("Not a proper url to generate was received")
+    
+    def _get_img_posts(self,url,html_list=[]):
+        """Discriminates between domains to call the apropiate scraper"""
+        if("https://e-hentai.org/" in url):
+            post_urls = []
+            for html in html_list:
+                post_urls += scraper.Scraper.scrap_ehentai(self, html)
+            return post_urls
+        if("http://danbooru.donmai.us" in url):
+            post_urls = []
+            for html in html_list:
+                post_urls += scraper.Scraper.scrap_danbooru(self, html)
+            return post_urls
+        if("https://rule34.xxx/" in url):
+            post_urls = []
+            for html in html_list:
+                post_urls += scraper.Scraper.scrap_r34(self, html)
+            return post_urls
+        if("https://hitomi.la/" in url):
+            return [-1]
+        raise Exception("Couldn't get any post from your url")
     
     def _check_url_domain(self,url):
         """Validates a webpage's domain in url for a supported site"""
@@ -27,7 +73,7 @@ class HCore():
         for domain in supported_domains:
             if url.find(domain) > 0:
                 return
-        raise Exception("Not a supported site found")
+        raise Exception("Not a supported website found")
     
     def create_output_dir(self,path,dir_name):
         """Creates a directory according to path and folder name"""

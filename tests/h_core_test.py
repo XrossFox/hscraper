@@ -9,28 +9,6 @@ from hscrap import h_core
 
 class Test(unittest.TestCase):
     """Test Class for h_core module"""
-    
-    def test_input_set_global_vars(self):
-        """
-        Tests if input_user sets the global variables
-        """
-        i = h_core.HCore()
-        url = "https://e-hentai.org/"
-        no_pages = 1
-        global_reference = i.user_input(url, no_pages)
-        self.assertEqual(global_reference.get_url(), url)
-        self.assertEqual(global_reference.get_no_pages(), no_pages)
-        
-    def test_input_set_global_vars_plus_default_path(self):
-        """
-        Tests if input_user sets the global variables
-        """
-        i = h_core.HCore()
-        url = "https://e-hentai.org/"
-        no_pages = 1
-        global_reference = i.user_input(url, no_pages)
-        self.assertEqual(global_reference.get_url(), url)
-        self.assertEqual(global_reference.get_no_pages(), no_pages)
         
     def test_url_only_accepts_ehen_domain(self):
         """Tests if sent link is a supported website"""

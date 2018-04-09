@@ -5,7 +5,6 @@ Created on 23/02/2018
 '''
 
 from urllib.request import Request, urlopen
-import requests
 import time
 class WebRetriever():
     '''
@@ -43,14 +42,14 @@ class WebRetriever():
             else:
                 url_lists.append(url+"&pid="+str(42*l_pages)) 
         return self._retrieve_web_pages(url_lists)
-    
+    '''
     def retrieve_hitomi_la(self,url,wait=1,pages=1):
         """Retrieves page from Hitomi.la reader, only one is needed, since it technically has no pagination.
         Also returns a list for consistency"""
         #request data for retrieval
         url_lists = [url]
         return self._retrieve_web_pages(url_lists)
-        
+    '''    
     def _retrieve_web_pages(self,url_list=[],wait=1):
         '''Retrieves a list of htmls from a list of urls. Not meant to be called directly, but as a helper for
         methods above'''
