@@ -89,8 +89,11 @@ class Scraper(object):
         html = web.retrieve_web_page(post_url, wait)
         
         soup = BeautifulSoup(html, "html.parser")
-        img_tag = soup.find(id="image")
-        img_url = img_tag.get("src")
+        try:
+            img_tag = soup.find(id="image")
+            img_url = img_tag.get("src")
+        except:
+            img_url = soup.find("video").get("src")
 
         return img_url
 
@@ -108,10 +111,7 @@ class Scraper(object):
         #Then look for every div which class is class=img-url
         #Process the text inside the divs so it resembles a proper url
         #Return al img urls
-        
         soup = BeautifulSoup(html, "html.parser")
-        #//g.hitomi.la/galleries/1198858/001.jpg
-        #https://0a.hitomi.la/galleries/1198858/001.jpg
         divs = soup.find_all("div",class_="img-url")
         texts = [div.text for div in divs]
         urls = ["https://0a.hitomi.la/galleries/"+text.split(sep="/")[-2]+"/"+text.split(sep="/")[-1] for text in texts]

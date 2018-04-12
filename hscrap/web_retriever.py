@@ -6,6 +6,7 @@ Created on 23/02/2018
 
 from urllib.request import Request, urlopen
 import time
+import random
 class WebRetriever():
     '''
     Class that contains page retrieval methods for web items.
@@ -24,6 +25,7 @@ class WebRetriever():
     def retrieve_danbooru(self,url,pages,wait=1):
         """Retrieves page/s from Danbooru as a list."""
         #request data for retrieval
+        url = url.replace("utf8=%E2%9C%93&","").replace("&ms=1","")
         url_lists = list()
         for l_pages in range(pages):
             if l_pages > 0:
@@ -48,6 +50,9 @@ class WebRetriever():
         """Retrieves page from Hitomi.la reader, only one is needed, since it technically has no pagination.
         Also returns a list for consistency"""
         #request data for retrieval
+        if url.find("galleries"):
+            url = url.replace("galleries","reader")
+            url += "#1"
         url_lists = [url]
         return self._retrieve_web_pages(url_lists)
     
@@ -79,7 +84,7 @@ class WebRetriever():
             try:
                 req = Request(img_url,headers={'User-Agent': 'Mozilla/5.0'})
                 data = urlopen(req).read()
-                img_name = (img_url.split("/")[-1][:50]) if len(img_url.split("/")[-1])>50 else img_url.split("/")[-1]
+                img_name = (str(random.randint(0,9000))+img_url.split("/")[-1][:50]) if len(img_url.split("/")[-1])>50 else img_url.split("/")[-1]
                 img_extension = "."+img_url.split("/")[-1].split(".")[-1]
                 if "?" in img_extension:
                     img_extension = img_extension.split("?")[0]
