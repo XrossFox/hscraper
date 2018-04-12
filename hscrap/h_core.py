@@ -4,7 +4,6 @@ Created on 21/02/2018
 @author: David
 '''
 import os
-import errno
 from hscrap import web_retriever
 from hscrap import scraper
 class HCore():

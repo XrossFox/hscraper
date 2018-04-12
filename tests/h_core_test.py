@@ -6,8 +6,6 @@ Created on 21/02/2018
 import unittest
 import os
 from hscrap import h_core
-from wheel.signatures import assertTrue
-import shutil
 
 class Test(unittest.TestCase):
     """Test Class for h_core module"""   
