@@ -6,7 +6,7 @@ setup(name='hscraper',
     author='XrossFox',
     author_email='warhead_1090@hotmail.com',
     license='MIT',
-    packages=find_packages(exclude="tests",),
+    packages=find_packages(exclude=["tests"],),
     zip_safe=False,
     install_requires=[
         'beautifulsoup4',
