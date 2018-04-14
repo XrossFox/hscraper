@@ -158,25 +158,35 @@ class HCore():
         
 @click.command()
 @click.option('-b',help="Path to a txt with multiple urls as: url,pages. One per line."+
-              " This option overrides -u and -p.")
-@click.option('-u',help="Gallery (or reader) url")
-@click.option('-p',help="Number of pages",default=1)
-@click.argument("output_path")
+              " This option overrides -u and -p. Throw it between quotes for safe measure")
+@click.option('-u',help="Gallery (or reader) url, throw it between quotes for safe measure")
+@click.option('-p',help="Number of pages, defaults to 1 page if not set",default=1)
+@click.option("-o",help="Output directory, throw it between quotes for safe measure")
 @click.option('-w',help="Wait time between downloads, defaut is 1.0 sec",default=1.0)
-def clickerino(b, u, p, output_path, w):
+def clickerino(b, u, p, o, w):
     """Suported sites include: ehentai.org, r34.xxx,
     danbooru.donmai and hitomi.la/reader.
-    \nWARNING NO.1: For hitomi.la, a page from the reader of the
+    \nWARNING: For hitomi.la, a page from the reader of the
     desired gallery must be given, no need to set -p."""
     if u is None and b is None:
         click.echo("Hey, there is no url, nor text file with links here!")
+        click.echo("type --help to know more")
         exit()
         
     if b is not None:
-        click.echo(b)
+        batch_start(b,o,w)
     else:
         core = HCore()
         core.user_input(u, p, output_path, w)
+
+def batch_start(text_file,output,wait):
+    with open(text_file) as bat:
+        lines = bat.readlines()
+    core = HCore()
+    print
+    for line in lines:
+        tmp = line.strip().split(",")
+        core.user_input(tmp[0],int(tmp[1]),output,wait)
 
 if __name__ == '__main__':
     clickerino()
