@@ -90,8 +90,8 @@ class WebRetriever():
                     img_extension = img_extension.split("?")[0]
                     img_extension = img_extension.replace("?","_")
                     img_name = img_name.replace("?","_")
-                with open(path+"\\"+img_name+img_extension, 'wb') as outfile:
-                    print("Saving to: "+path+"\\"+img_name+img_extension)
+                with open(path+"/"+img_name+img_extension, 'wb') as outfile:
+                    print("Saving to: "+path+"/"+img_name+img_extension)
                     outfile.write(data)
                 break
             except Exception as e:
