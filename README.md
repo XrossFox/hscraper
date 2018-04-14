@@ -13,16 +13,17 @@ A web scrapping tool to rip images from Ehentai, Danbooru, R34 and hitomi.la.
 ### Installation:
 As easy as:
 > pip install hscraper
+
 *It'll also install dependencies if you don't have them already.*
 
 ### Usage
-> hscraper [OPTIONS]
->**-b:** To set a txt with links in it, give it the path to it. Overrides -u and -p. It must be <url>,<page> per line.
->**-u**: To set the url to the gallery.
->**-p**: The number of pages to download. Defaults to 1 if not set.
->**-o**: Output directory for the gallery.
->**-w**: Wait time between downloaded image (just in case, so you don't get ip banned from nowhere). Defaults to 1.0 second if not set.
->**--help**: *HALP!*
+- hscraper [OPTIONS]
+- **-b:** To set a txt with links in it, give it the path to it. Overrides -u and -p. It must be <url>,<page> per line.
+- **-u**: To set the url to the gallery.
+- **-p**: The number of pages to download. Defaults to 1 if not set.
+- **-o**: Output directory for the gallery.
+- **-w**: Wait time between downloaded image (just in case, so you don't get ip banned from nowhere). Defaults to 1.0 second if not set.
+- **--help**: *HALP!*
 
 And that's it folks.
 
