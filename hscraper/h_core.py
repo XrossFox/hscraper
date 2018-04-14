@@ -13,8 +13,8 @@ for p in range(len(root_path)-1):
     string += root_path[p]+"\\"
 print(string)
 sys.path.append(string)
-from hscrap import web_retriever
-from hscrap import scraper
+from hscraper import web_retriever
+from hscraper import scraper
 import click
 class HCore():
     

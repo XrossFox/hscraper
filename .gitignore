@@ -2,3 +2,4 @@
 *.project
 *.pydevproject
 tests/test_runner.bat
+hscraper.egg-info

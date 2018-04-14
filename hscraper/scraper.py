@@ -4,7 +4,7 @@ Created on 30/03/2018
 @author: XrossFox
 '''
 from bs4 import BeautifulSoup
-from hscrap import web_retriever
+from hscraper import web_retriever
 
 class Scraper(object):
     '''
