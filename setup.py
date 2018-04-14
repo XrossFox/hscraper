@@ -9,9 +9,9 @@ setup(name='hscraper',
     packages=find_packages(exclude=["tests"],),
     zip_safe=False,
     install_requires=[
-        'beautifulsoup4',
-        'urllib3',
-        'click',
+        'beautifulsoup4>=4.6.0',
+        'urllib3>=1.22',
+        'click>=6.7',
     ],
     entry_points={
         'console_scripts': [

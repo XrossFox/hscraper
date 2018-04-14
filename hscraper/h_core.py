@@ -172,7 +172,11 @@ def clickerino(b, u, p, o, w):
         click.echo("Hey, there is no url, nor text file with links here!")
         click.echo("type --help to know more")
         exit()
-        
+
+    if o is None:
+        click.echo("No output path specified. Type --help for more.")
+        exit()
+
     if b is not None:
         batch_start(b,o,w)
     else:
