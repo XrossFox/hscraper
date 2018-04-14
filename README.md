@@ -18,7 +18,7 @@ As easy as:
 
 ### Usage
 - hscraper [OPTIONS]
-- **-b:** To set a txt with links in it, give it the path to it. Overrides -u and -p. It must be <url>,<page> per line.
+- **-b:** To set a txt with links in it, give it the path to it. Overrides -u and -p. It must be *url*,*page* per line.
 - **-u**: To set the url to the gallery.
 - **-p**: The number of pages to download. Defaults to 1 if not set.
 - **-o**: Output directory for the gallery.
