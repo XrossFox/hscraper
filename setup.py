@@ -18,4 +18,5 @@ setup(name='hscraper',
             'hscraper = hscraper.h_core:clickerino'
         ]
     },
+    data_files = [("",["LICENSE"])],
 )
