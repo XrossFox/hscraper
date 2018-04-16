@@ -181,7 +181,7 @@ def clickerino(b, u, p, o, w):
         batch_start(b,o,w)
     else:
         core = HCore()
-        core.user_input(u, p, output_path, w)
+        core.user_input(u, p, o, w)
 
 def batch_start(text_file,output,wait):
     with open(text_file) as bat:
