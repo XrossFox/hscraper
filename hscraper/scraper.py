@@ -5,7 +5,6 @@ Created on 30/03/2018
 '''
 from bs4 import BeautifulSoup
 from hscraper import web_retriever
-from builtins import range
 
 class Scraper(object):
     '''
