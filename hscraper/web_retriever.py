@@ -29,9 +29,9 @@ class WebRetriever():
         url_lists = list()
         for l_pages in range(pages):
             if l_pages > 0:
-                url_lists.append("?page={}&".join(url.split(sep="?")).format(l_pages+1))
+                url_lists.append("?page={}".join(url.split(sep="?")).format(l_pages+1))
             else:
-                url_lists.append(url)
+                url_lists.append(url.replace("posts?","posts?page=1&"))
         return self._retrieve_web_pages(url_lists)
     
     def retrieve_r34(self,url,pages,wait=1):

@@ -26,10 +26,11 @@ class Scraper(object):
         
         #Seek for post div. Then look for every a tag inside it. Add every url to a list.
         soup = BeautifulSoup(html_text,"html.parser")
-        div = soup.find(id="posts").find("div",style="overflow: hidden;")
+        div = soup.find(id="posts-container")
         tags = div.find_all("a")
         #These a tags contain a relative url, so the domain must be appended too
         links = ["http://danbooru.donmai.us"+a.get("href") for a in tags]
+        print(links)
         return (soup.find("title").text,links)
     
     def scrap_r34(self,html_text):

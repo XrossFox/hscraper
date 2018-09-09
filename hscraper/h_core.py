@@ -33,9 +33,11 @@ class HCore():
         #retrieve htmls
         print("Rerieving pages from the internet...")
         html_list = self._generate_links(url, no_pages, wait)
+        
         #scrap the htmls for each post url
         print("Scraping...")
         posts = self._scrap_posts(url,html_list)
+        
         #create output dir and download images. I ended up with a list of touples with a touple and list inside it. Derp
         print("The gallery Name is: "+posts[0].strip())
         gallery_name = posts[0]
@@ -121,6 +123,7 @@ class HCore():
                 post_urls += temporal_list[1]
             print ("Found: "+str(len(post_urls))+" Image Posts")
             return [gallery_name,post_urls]
+        
         if("https://rule34.xxx/" in url):
             post_urls = []
             for html in html_list:
