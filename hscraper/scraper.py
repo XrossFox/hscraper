@@ -5,6 +5,7 @@ Created on 30/03/2018
 '''
 from bs4 import BeautifulSoup
 from hscraper import web_retriever
+from builtins import range
 
 class Scraper(object):
     '''
@@ -30,7 +31,6 @@ class Scraper(object):
         tags = div.find_all("a")
         #These a tags contain a relative url, so the domain must be appended too
         links = ["http://danbooru.donmai.us"+a.get("href") for a in tags]
-        print(links)
         return (soup.find("title").text,links)
     
     def scrap_r34(self,html_text):
@@ -109,11 +109,24 @@ class Scraper(object):
         and then all image links are scrapped from there'''
         
         #Downloads the html doc
+        #Get root url
         #Then look for every div which class is class=img-url
         #Process the text inside the divs so it resembles a proper url
         #Return al img urls
         soup = BeautifulSoup(html, "html.parser")
+        
         divs = soup.find_all("div",class_="img-url")
         texts = [div.text for div in divs]
-        urls = ["https://0a.hitomi.la/galleries/"+text.split(sep="/")[-2]+"/"+text.split(sep="/")[-1] for text in texts]
+        
+        urls = []
+        
+        for text in texts:
+            tmp = text.split("/")
+            if (int(tmp[-2][-1]) % 2) > 0 :
+                text = text.replace("//g.","https://ba.")
+            else: text = text.replace("//g.","https://aa.")
+            urls.append(text)
+        
         return urls
+    
+        
