@@ -4,3 +4,4 @@
 tests/test_runner.bat
 hscraper.egg-info
 dist
+build
