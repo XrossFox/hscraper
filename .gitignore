@@ -5,3 +5,4 @@ tests/test_runner.bat
 hscraper.egg-info
 dist
 build
+.settings/org.eclipse.ltk.core.refactoring.prefs
