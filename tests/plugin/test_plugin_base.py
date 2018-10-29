@@ -1,9 +1,9 @@
 import sys
+import os
 sys.path.append('../../hscraper/plugin')
 
 import unittest
 from bs4 import BeautifulSoup
-import hashlib
 
 import plugin_base
 
@@ -66,6 +66,30 @@ class Test(unittest.TestCase):
         self.assertEqual(response["retry"], 3)
         self.assertEqual(response["response_code"], 404)
         self.assertEqual(response["payload"], None)
+        
+    def test_create_dir(self):
+        """
+        Tests the creation of a directory given a path
+        """
+        
+        self.pb.create_dir(path="test_directory")
+        
+        self.assertTrue(os.path.exists("test_directory"))
+        
+    def test_create_invalid_char_dir(self):
+        """
+        Tests the creation of a directory given an path with invalid characters
+        """
+        
+        self.pb.create_dir(path="?test_directory2:")
+        
+        self.assertTrue(os.path.exists("test_directory2"))
+        
+    def test_write_to_image(self):
+        resp = self.pb.get_request("https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Facebook_New_Logo_%282015%29.svg/1200px-Facebook_New_Logo_%282015%29.svg.png",
+                            wait=1, retry=1, wait_retry=1)
+        
+        self.pb.write_to(path="", name="le_test.png", payload=bytes(resp['payload']))
         
     
 
