@@ -1,4 +1,6 @@
 import plugin_base
+import re
+from bs4 import BeautifulSoup
 
 class Danbooru(plugin_base.PluginBase):
     '''
@@ -19,15 +21,25 @@ class Danbooru(plugin_base.PluginBase):
         return url
     
     def validate_url(self, url):
-        #https://danbooru.donmai.us/posts?utf8=%E2%9C%93&tags=touhou&ms=1
-        #https://danbooru.donmai.us/posts?tags=touhou
-        pass
+        """
+        Validates URL using a regular expression.
+        """
+        if re.match(r"https:\/\/danbooru\.donmai\.us\/posts\?[page=\d+&]*tags=[\w\d+]+", url):
+            return True;
+        return False
     
     def scrap_for_images(self):
         pass
     
-    def scrap_for_posts(self):
-        pass
+    def scrap_for_posts(self, url, wait, retry, wait_retry):
+        response = self.get_request(url, wait, retry, wait_retry)
+        #Seek for post div. Then look for every a tag inside it. Add every url to a list.
+        soup = BeautifulSoup(response['payload'],"html.parser")
+        div = soup.find(id="posts-container")
+        tags = div.find_all("a")
+        #These a tags contain a relative url, so the domain must be appended too
+        links = ["https://danbooru.donmai.us"+a.get("href") for a in tags]
+        return (soup.find("title").text,links)
     
     def scrap_for_pages(self, url, pages, skip_from=None, skip_to=None):
         """

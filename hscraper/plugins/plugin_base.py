@@ -1,7 +1,6 @@
 import os
 import requests
 import re
-from fake_useragent import UserAgent
 from time import sleep
 from abc import ABC, abstractmethod
 
@@ -84,8 +83,8 @@ class PluginBase(ABC):
         You can also send a dictionary as cookies.
         """
         
-        ua = UserAgent(cache=False)
-        headers = {"User-Agent" : ua.random}
+    
+        headers = {"User-Agent" : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'}
         cookies = cookies
         res = {'retry':retry, 'response_code':404, 'payload':None}
         

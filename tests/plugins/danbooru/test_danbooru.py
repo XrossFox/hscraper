@@ -3,6 +3,7 @@ sys.path.append('../../../hscraper/plugins')
 sys.path.append('../../../hscraper/plugins/danbooru')
 import danbooru_scraper
 import unittest
+import re
 
 
 class Test(unittest.TestCase):
@@ -74,13 +75,38 @@ class Test(unittest.TestCase):
                           "https://danbooru.donmai.us/posts?page=3&tags=short_sleeves",]
             
         out = self.dan.scrap_for_pages(given_url, 4, skip_from=1, skip_to=3)
-        print(out)
         for i in range(2):
             self.assertEqual(out[i], expected_ouput[i])
+    
+    def test_validate_url(self):
+        """
+        Tests if it validates urls using a regular expression
+        """
+        given_urls = ["https://danbooru.donmai.us/posts?tags=short_sleeves",
+                          "https://danbooru.donmai.us/posts?page=2&tags=short_sleeves",
+                          "https://danbooru.donmai.us/posts?page=3&tags=short_sleeves",
+                          "https://danbooru.donmai.us/posts?page=4&tags=touhou+short_sleeves+",
+                          ]
+        bad_url = "wrong!"
         
+        for url in given_urls:
+            self.assertTrue(self.dan.validate_url(url))
         
+        self.assertFalse(self.dan.validate_url(bad_url))
         
-
+    
+    def test_scrap_for_posts(self):
+        """
+        Tests scrap_for_posts returns valid post urls using a regular expression
+        """
+        
+        url = "http://danbooru.donmai.us/posts?tags=touhou"
+        
+        response_tuple = self.dan.scrap_for_posts(url, 1, 1, 1)
+        
+        pat = re.compile(r'http[s]*:\/\/danbooru\.donmai\.us\/posts\/[\d]+')
+        for post in response_tuple[1]:
+            self.assertTrue(pat.match(post))
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
