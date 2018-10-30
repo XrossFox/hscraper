@@ -18,6 +18,10 @@ class PluginBase(ABC):
         pass
     
     @abstractmethod
+    def validate_url(self,url):
+        pass
+    
+    @abstractmethod
     def scrap_for_pages(self):
         """
         Abstract method that scraps html code for pages

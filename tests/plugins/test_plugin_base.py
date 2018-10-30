@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.append('../../hscraper/plugin')
+sys.path.append('../../hscraper/plugins')
 
 import unittest
 from bs4 import BeautifulSoup
@@ -10,6 +10,9 @@ import plugin_base
 class TestClass(plugin_base.PluginBase):
     
     def start(self):
+        pass
+    
+    def validate_url(self, url):
         pass
     
     def scrap_for_images(self):
