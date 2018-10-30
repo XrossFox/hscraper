@@ -82,6 +82,7 @@ class Test(unittest.TestCase):
         """
         Tests if it validates urls using a regular expression
         """
+        
         given_urls = ["https://danbooru.donmai.us/posts?tags=short_sleeves",
                           "https://danbooru.donmai.us/posts?page=2&tags=short_sleeves",
                           "https://danbooru.donmai.us/posts?page=3&tags=short_sleeves",
