@@ -106,8 +106,41 @@ class Test(unittest.TestCase):
         response_tuple = self.dan.scrap_for_posts(url, 1, 1, 1)
         
         pat = re.compile(r'http[s]*:\/\/danbooru\.donmai\.us\/posts\/[\d]+')
-        for post in response_tuple[1]:
+        for post in response_tuple:
             self.assertTrue(pat.match(post))
+            
+    def test_scrap_for_images(self):
+        """
+        Tests scrap_for_images for the links it returns
+        """
+        
+        post_test_links = [
+            "https://danbooru.donmai.us/posts/3300197",
+            "https://danbooru.donmai.us/posts/3302853",
+            "https://danbooru.donmai.us/posts/3302657",
+            "https://danbooru.donmai.us/posts/3302649",
+            "https://danbooru.donmai.us/posts/3302516",
+            "https://danbooru.donmai.us/posts/3240634",
+            "https://danbooru.donmai.us/posts/3036340"
+            ]
+        
+        expected_output = [
+            ('3300197',"https://danbooru.donmai.us/data/__yorha_no_2_type_b_and_yorha_no_9_type_s_nier_series_drawn_by_von_lemon_vvv__9268fe3ac1215878d2810070c66f97cf.png"),
+            ('3302853',"https://danbooru.donmai.us/data/__uraraka_ochako_boku_no_hero_academia_drawn_by_routing_zhengyi__08791b21a033da7222633b2139828ce1.jpg"),
+            ('3302657',"https://danbooru.donmai.us/data/__drawn_by_routing_zhengyi__2c4724cb45e546a66006b9a7cbb8b2ea.jpg"),
+            ('3302649',"https://danbooru.donmai.us/data/__fire_keeper_dark_souls_and_souls_from_software_drawn_by_routing_zhengyi__8f71e61f810b2bf3e64b9bda90bf4cd2.jpg"),
+            ('3302516',"https://danbooru.donmai.us/data/__yorha_no_2_type_b_nier_series_and_nier_automata_drawn_by_routing_zhengyi__30f3948719878670106a6757831085c9.jpg"),
+            ('3240634',"https://danbooru.donmai.us/data/__asui_tsuyu_boku_no_hero_academia_drawn_by_routing_zhengyi__ee1e9db83fe99055f5b0509733d7f7b6.jpg"),
+            ('3036340',"https://danbooru.donmai.us/data/__albedo_overlord_maruyama_drawn_by_routing_zhengyi__4ad00a94237dd375575cd129a8871fde.jpg")
+            ]
+        
+        list_of_urls = []
+        for url in post_test_links:
+            list_of_urls.append(self.dan.scrap_for_images(url, 3, 3, 3))
+        
+        for i in range(len(list_of_urls)):
+            self.assertEqual(list_of_urls[i][0], expected_output[i][0])
+            self.assertEqual(list_of_urls[i][1], expected_output[i][1])
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

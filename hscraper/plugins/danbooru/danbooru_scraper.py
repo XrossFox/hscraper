@@ -28,8 +28,26 @@ class Danbooru(plugin_base.PluginBase):
             return True;
         return False
     
-    def scrap_for_images(self):
-        pass
+    def scrap_for_images(self, url, wait, retry, wait_retry):
+        """
+        Receives the URL to a post, returns the number of the post and the URL to the image as
+        a tuple.
+        """
+        
+        html = self.get_request(url, wait, retry, wait_retry)
+        
+        soup = BeautifulSoup(html['payload'], "html.parser")
+        
+        resize = soup.find(id="image-resize-link")
+        
+        if resize:
+            img_url = resize.get("href")
+        else:
+            img_tag = soup.find(id="image")
+            img_url = img_tag.get("src")
+        
+        name = url.split("/")
+        return (str(name[-1]), img_url)
     
     def scrap_for_posts(self, url, wait, retry, wait_retry):
         response = self.get_request(url, wait, retry, wait_retry)
@@ -39,7 +57,7 @@ class Danbooru(plugin_base.PluginBase):
         tags = div.find_all("a")
         #These a tags contain a relative url, so the domain must be appended too
         links = ["https://danbooru.donmai.us"+a.get("href") for a in tags]
-        return (soup.find("title").text,links)
+        return links
     
     def scrap_for_pages(self, url, pages, skip_from=None, skip_to=None):
         """
