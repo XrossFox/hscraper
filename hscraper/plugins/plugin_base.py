@@ -10,10 +10,14 @@ class PluginBase(ABC):
     Base class for scraper plug-ins.
     '''
     @abstractmethod
-    def start(self, url, pages, skip_pages, wait, retries, wait_retries, output):
+    def start(self, url, pages, skip_from, skip_to, wait, retry, wait_retry, output):
         """
         Abstract method for control flow
         """
+        pass
+    
+    @abstractmethod
+    def gen_gal_name(self,url):
         pass
     
     @abstractmethod
@@ -41,15 +45,21 @@ class PluginBase(ABC):
         """
         pass
     
-    def create_dir(self, path):
+    def create_dir(self, path, name):
         """
         Creates output directory to store downloaded galleries.
         """
         
         path = re.sub(r"[<>:\"\\|\?\*^]+", "", path)
-         
-        if not os.path.exists(path):
-            os.makedirs(path)
+        name = re.sub(r"[<>:\"\\|\?\*^]+", "", name)
+        
+        if not path.endswith("/"):
+            path = path+"/"
+        
+        if not os.path.exists(path+name):
+            os.makedirs(path+name)
+            
+        return path+name
             
     def write_to(self, path, name, payload):
         """
@@ -97,6 +107,7 @@ class PluginBase(ABC):
                 break
                 
             except Exception as w:
+                print("Error downloading : {}\nRetrying in{}".format(url, wait_retry))
                 res['payload'] = None
                 res['response_code'] = 404
                 res['retry'] = n_retry + 1 

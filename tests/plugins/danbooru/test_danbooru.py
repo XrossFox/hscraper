@@ -141,6 +141,15 @@ class Test(unittest.TestCase):
         for i in range(len(list_of_urls)):
             self.assertEqual(list_of_urls[i][0], expected_output[i][0])
             self.assertEqual(list_of_urls[i][1], expected_output[i][1])
+            
+    def test_gen_gal_name(self):
+        """
+        Tests the generation of gallery names from urls
+        """
+        test_url = "https://danbooru.donmai.us/posts?tags=routing-zhengyi+1girl+"
+        expected = "Danbooru_routing-zhengyi_1girl_"
+        
+        self.assertEqual(self.dan.gen_gal_name(test_url), expected)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

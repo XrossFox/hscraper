@@ -23,6 +23,9 @@ class TestClass(plugin_base.PluginBase):
     
     def scrap_for_posts(self):
         pass
+    
+    def gen_gal_name(self, url):
+        pass
 
 class Test(unittest.TestCase):
     """
@@ -75,16 +78,20 @@ class Test(unittest.TestCase):
         Tests the creation of a directory given a path
         """
         
-        self.pb.create_dir(path="test_directory")
+        self.pb.create_dir(path=".", name="test_directory")
         
         self.assertTrue(os.path.exists("test_directory"))
+        
+        self.pb.create_dir("test_directory","another_test")
+        
+        self.assertTrue(os.path.exists("test_directory/another_test"))
         
     def test_create_invalid_char_dir(self):
         """
         Tests the creation of a directory given an path with invalid characters
         """
         
-        self.pb.create_dir(path="?test_directory2:")
+        self.pb.create_dir(path="?.:", name="test_directory2")
         
         self.assertTrue(os.path.exists("test_directory2"))
         
