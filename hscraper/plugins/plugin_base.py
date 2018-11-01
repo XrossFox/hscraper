@@ -25,21 +25,21 @@ class PluginBase(ABC):
         pass
     
     @abstractmethod
-    def scrap_for_pages(self):
+    def scrap_for_pages(self, url, pages, skip_from=None, skip_to=None):
         """
         Abstract method that scraps html code for pages
         """
         pass
     
     @abstractmethod
-    def scrap_for_posts(self):
+    def scrap_for_posts(self, url, wait, retry, wait_retry):
         """
         Abstract method that scraps html code for posts
         """
         pass
     
     @abstractmethod
-    def scrap_for_images(self):
+    def scrap_for_images(self, url, wait, retry, wait_retry):
         """
         Abstract method that scraps html code for images
         """
