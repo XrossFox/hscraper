@@ -8,6 +8,13 @@ class Danbooru(plugin_base.PluginBase):
     '''
     
     def start(self, url, pages, skip_from, skip_to, wait, retry, wait_retry, output):
+        """
+        Starts the scraping, and dowloading process
+        """
+        
+        page_not_found = []
+        image_not_found = []
+        
         url = self.clean_url(url)
         
         if not self.validate_url(url):
@@ -18,19 +25,40 @@ class Danbooru(plugin_base.PluginBase):
         f_out = self.create_dir(output, self.gen_gal_name(url))
         print("Output Directory is: {}".format(f_out))
         
-        pages = self.scrap_for_pages(url, pages, skip_from, skip_to)
+        html_pages = self.scrap_for_pages(url, pages, skip_from, skip_to)
         
-        for page in pages:
+        for page in html_pages:
+            
             print("Scraping page: {}".format(page))
             posts = self.scrap_for_posts(page, wait, retry, wait_retry)
+            
+            if posts == None:
+                page_not_found.append(page)
+                continue
             
             for post in posts:
                 
                 image = self.scrap_for_images(post, wait, retry, wait_retry)
-                print("Downloading image in: {}".format)
+
+                if image == None:
+                    image_not_found.append(post)
+                    continue
+                
+                print("Downloading image in: {}".format(image[1]))
                 img_data = self.get_request(image[1], wait, retry, wait_retry)
-                print("Downloading image to: {}/{}".format(f_out,image[0]))
-                self.write_to(f_out, image[0], img_data)
+                
+                print("Downloading image to: {}/{}.{}".format(f_out,image[0],image[2]))
+                self.write_to(f_out, "{}.{}".format(image[0],image[2]), img_data['payload'])
+                
+        if len(page_not_found) > 0:
+            print("Pages not found: {}".format(len(page_not_found)))
+            for page in page_not_found:
+                print("-"*4+page)
+                
+        if len(image_not_found) > 0:
+            print("Images not found: {}".format(len(image_not_found)))
+            for img in image_not_found:
+                print("+"*4+img)
             
      
     
@@ -46,8 +74,7 @@ class Danbooru(plugin_base.PluginBase):
         """
         Normalizes danbooru weird urls. Returns an url without weird characters.
         """
-        #https://danbooru.donmai.us/posts?utf8=%E2%9C%93&tags=touhou&ms=1
-        #https://danbooru.donmai.us/posts?tags=touhou
+
         url = url.replace("utf8=%E2%9C%93&","")
         url = url.replace("&ms=1","")
         return url
@@ -62,11 +89,17 @@ class Danbooru(plugin_base.PluginBase):
     
     def scrap_for_images(self, url, wait, retry, wait_retry):
         """
-        Receives the URL to a post, returns the number of the post and the URL to the image as
-        a tuple.
+        Receives the URL to a post, returns the number of the post, the URL and file extensions
+        to the image as a tuple. If it receives an invalid url or None, it returns None.
         """
         
+        if url == None:
+            return None
+        
         html = self.get_request(url, wait, retry, wait_retry)
+        
+        if html["response_code"] != 200:
+            return None
         
         soup = BeautifulSoup(html['payload'], "html.parser")
         
@@ -79,19 +112,26 @@ class Danbooru(plugin_base.PluginBase):
             img_url = img_tag.get("src")
         
         name = url.split("/")
-        return (str(name[-1]), img_url)
+        extension = img_url.split(".")
+        return (str(name[-1]), img_url, extension[-1])
     
     def scrap_for_posts(self, url, wait, retry, wait_retry):
         """
         Scraps all post url in a given page. Returns a list of links to each post.
+        If it receives an invalid url or None, it returns None.
         """
+        if url == None:
+            return None
         
         response = self.get_request(url, wait, retry, wait_retry)
-        #Seek for post div. Then look for every a tag inside it. Add every url to a list.
+        
+        if response['response_code'] != 200:
+            return None
+
         soup = BeautifulSoup(response['payload'],"html.parser")
         div = soup.find(id="posts-container")
         tags = div.find_all("a")
-        #These a tags contain a relative url, so the domain must be appended too
+
         links = ["https://danbooru.donmai.us"+a.get("href") for a in tags]
         return links
     
@@ -101,7 +141,7 @@ class Danbooru(plugin_base.PluginBase):
         to skip certain pages (exclusive in both ends). If skip_from is set, it will skip pages until
         the end, or up to skip_to. To use skip_to, skip_from must be set first.
         """
-        #https://danbooru.donmai.us/posts?tags=short_sleeves"
+
         url_lists = list()
         
         if not skip_to:

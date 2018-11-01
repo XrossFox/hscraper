@@ -107,7 +107,7 @@ class PluginBase(ABC):
                 break
                 
             except Exception as w:
-                print("Error downloading : {}\nRetrying in{}".format(url, wait_retry))
+                print("Error downloading : {}\nRetrying in: {}".format(url, wait_retry))
                 res['payload'] = None
                 res['response_code'] = 404
                 res['retry'] = n_retry + 1 
