@@ -80,7 +80,7 @@ class PluginBase(ABC):
             print("Couldn't write: {}".format(path+"/"+name))
         
     
-    def get_request(self, url, wait, retry, wait_retry, **cookies):
+    def get_request(self, url, wait, retry, wait_retry, cookies=None):
         """
         Sends an http request to the given url. returns a dictionary with 3 keys:
         
@@ -95,12 +95,16 @@ class PluginBase(ABC):
         
     
         headers = {"User-Agent" : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'}
-        cookies = cookies
+        #cookies = cookies
         res = {'retry':retry, 'response_code':404, 'payload':None}
         
         for n_retry in range(retry):
             try:
-                req = requests.get(url, headers=headers, cookies=cookies)
+                if cookies:
+                    req = requests.get(url, headers=headers, cookies=cookies)
+                else:
+                    req = requests.get(url, headers=headers)
+                
                 res['payload'] = req.content
                 res['response_code'] = req.status_code
                 res['retry'] = n_retry + 1
