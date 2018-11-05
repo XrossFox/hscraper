@@ -132,8 +132,6 @@ class Test(unittest.TestCase):
         for url in post_test_links:
             list_of_urls.append(self.r34.scrap_for_images(url, 3, 3, 3))
         
-        print(list_of_urls)
-        
         for i in range(len(list_of_urls)):
             self.assertEqual(list_of_urls[i][0], expected_output[i][0])
             self.assertEqual(list_of_urls[i][1], expected_output[i][1])
@@ -168,6 +166,50 @@ class Test(unittest.TestCase):
         test_url = "https://rule34.xxx/index.php?page=post&s=list&tags=yorha_a2+-futanari+"
         expected = "R34_yorha_a2_no-futanari_"
         self.assertEqual(self.r34.gen_gal_name(test_url), expected)
+        
+    def test_start(self):
+        """
+        Tests the whole process, given a valid url
+        """
+        
+        url = "https://rule34.xxx/index.php?page=post&s=list&tags=yorha_2b+-3d+-futanari+-source_filmmaker+"
+        pages = 1
+        wait = 3
+        retry = 3
+        wait_retry = 3
+        output = "./"
+        
+        self.r34.start(url, pages, None, None, wait, retry, wait_retry, output)
+    
+    def test_start_page_2(self):
+        """
+        Tests the whole process, given a valid url
+        """
+        
+        url = "https://rule34.xxx/index.php?page=post&s=list&tags=samus_aran+-3d+-source_filmmaker++-futanari+"
+        pages = 1
+        wait = 3
+        retry = 3
+        wait_retry = 3
+        output = "./"
+        
+        self.r34.start(url, pages, 1, 2, wait, retry, wait_retry, output)
+        
+    def test_start_page_3_and_4(self):
+        """
+        Tests the whole process, given a valid url
+        """
+        
+        url = "https://rule34.xxx/index.php?page=post&s=list&tags=-futanari+-3d+mercy+"
+        pages = 1
+        wait = 3
+        retry = 3
+        wait_retry = 3
+        output = "./"
+        
+        self.r34.start(url, pages, 2, 4, wait, retry, wait_retry, output)
+        
+
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
