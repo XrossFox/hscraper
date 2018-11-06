@@ -184,7 +184,16 @@ class Test(unittest.TestCase):
         
         self.assertEqual(self.ehen.gen_gal_name(test_url,3,3,3), expected)
         
-    def test_start_clean_needed(self):
+    def test_gen_gal_name_with_cookie(self):
+        """
+        Tests the generation of gallery names from urls
+        """
+        test_url = "https://e-hentai.org/g/1310706/2f687a6f59/"
+        expected = "e-hentai - 1310706 - Artist Galleries ::: Shiory"
+        
+        self.assertEqual(self.ehen.gen_gal_name(test_url,3,3,3), expected)
+        
+    def test_start(self):
         """
         Tests the whole process, given a valid url
         """

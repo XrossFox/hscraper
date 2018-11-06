@@ -63,7 +63,7 @@ class EhenScraper(plugin_base.PluginBase):
         """
         Creates a name for the gallery from the title of the gallery.
         """
-        req = self.get_request(url, wait, retry, wait_retry)
+        req = self.get_request(url, wait, retry, wait_retry, cookies=dict(nw="1"))
         
         h = BeautifulSoup(req['payload'], "html.parser")
         
