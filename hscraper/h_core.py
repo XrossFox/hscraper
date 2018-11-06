@@ -1,176 +1,63 @@
-'''
-Created on 21/02/2018
-
-@author: David
-'''
-#This adds the whole root folder to python path
-import os
 import sys
-local = os.path.dirname(os.path.realpath(__file__))
-root_path = local.split("\\")
-string = ""
-for p in range(len(root_path)-1):
-    string += root_path[p]+"\\"
-print(string)
-sys.path.append(string)
-from hscraper import web_retriever
-from hscraper import scraper
+sys.path.append('plugins')
+sys.path.append('plugins/danbooru')
+import danbooru_scraper
+sys.path.append('plugins/ehen')
+import ehen_scraper
+sys.path.append('plugins/r34')
+import r34_scraper
+sys.path.append('plugins/hitomi')
+import hitomi_scraper
+
 import click
+
 class HCore():
     
-    def user_input(self,url,no_pages,output_path,wait=1):
-        """Receives url, number of pages and optional output path. Starts the process."""
-        #Meant for process control, calls every other method that does the work.
-        
-        #check url
-        print("Validating Url")
-        self._check_url_domain(url)
-        
-        #check pages
-        print("Validating Pages")
-        self._check_for_pages(no_pages)
-        
-        #retrieve htmls
-        print("Rerieving pages from the internet...")
-        html_list = self._generate_links(url, no_pages, wait)
-        
-        #scrap the htmls for each post url
-        print("Scraping...")
-        posts = self._scrap_posts(url,html_list)
-        
-        #create output dir and download images. I ended up with a list of touples with a touple and list inside it. Derp
-        print("The gallery Name is: "+posts[0].strip())
-        gallery_name = posts[0]
-        final_destination = self.create_output_dir(output_path, gallery_name)
-        
-        #scrap posts for each image url
-        print("Looking for pictures...")
-        imgs_urls = self._scrap_imgs(url,posts,wait)
-        #download images!
-        print("Downloading " +str(len(imgs_urls))+" picture/s")
-        self._download_images(imgs_urls,final_destination,wait)
-        
-        print("My job here is done!")
-        
-    def _download_images(self,imgs_urls,final_destination,wait=1):
-        """Downloads all images in a list"""
-        for url in imgs_urls:
-            web_retriever.WebRetriever().retrieve_image(url, final_destination, wait)
-        
-    def _check_for_pages(self,no_pages):
-        try:
-            return no_pages in range(1,100)
-        except:
-            raise Exception("Invalid number of pages. Check that it is a positive integral number.")
+    def __init__(self):
+        self.dan = danbooru_scraper.Danbooru()
+        self.hen = ehen_scraper.EhenScraper()
+        self.r34 = r34_scraper.R34Scraper()
+        self.hit = hitomi_scraper.HitomiScraper()
     
-    
-    
-    def _scrap_imgs(self,url,posts=[],wait=1):
-        """Discriminates between domains to call the apropiate post scraper"""
-        img_url_list = []
-        if("https://e-hentai.org/" in url):
-            #Position 1 is the one with the list of posts urls
-            for post in posts[1]:
-                img_url_list.append(scraper.Scraper.scrap_post_ehentai(self, post, wait))
-            return img_url_list
-        if("danbooru.donmai.us" in url):
-            for post in posts[1]:
-                img_url_list.append(scraper.Scraper.scrap_post_danbooru(self, post, wait))
-            return img_url_list
-        if("https://rule34.xxx/" in url):
-            for post in posts[1]:
-                img_url_list.append(scraper.Scraper.scrap_post_r34(self, post, wait))
-            return img_url_list
-        if("https://hitomi.la/" in url):
-            img_url_list = scraper.Scraper.scrap_post_hitomi_la(self, posts[1][0], wait)
-            return img_url_list
-        raise Exception("Not a proper url to generate was received")
-    
-           
-    def _generate_links(self,url,no_pages,wait):
-        '''Discriminates between domains to call the apropiate web retriever to get the html docs'''
-        
-        if("https://e-hentai.org/" in url):
-            return web_retriever.WebRetriever().retrieve_ehentai(url, no_pages, wait)
-        if("danbooru.donmai.us/" in url):
-            return web_retriever.WebRetriever().retrieve_danbooru(url, no_pages, wait)
-        if("https://rule34.xxx/" in url):
-            return web_retriever.WebRetriever().retrieve_r34(url, no_pages, wait)
-        if("https://hitomi.la/" in url):
-            return web_retriever.WebRetriever().retrieve_hitomi_la(url, wait, no_pages)
-        raise Exception("We couldn't find a proper link here, matey :(")
-    
-    def _scrap_posts(self,url,html_list=[]):
-        """Discriminates between domains to call the apropiate scraper. Returns a list of touples(gallery_name,list_of_post_urls)"""
-        if("https://e-hentai.org/" in url):
-            post_urls = []
-            for html in html_list:
-                temporal_list = []
-                gallery_name = ""
-                temporal_list = scraper.Scraper.scrap_ehentai(self, html)
-                gallery_name = temporal_list[0]
-                post_urls += temporal_list[1]
-            print ("Found: "+str(len(post_urls))+" Image Posts")
-            return [gallery_name,post_urls]
-        
-        if("danbooru.donmai.us/" in url):
-            post_urls = []
-            for html in html_list:
-                temporal_list = []
-                gallery_name = ""
-                temporal_list += scraper.Scraper.scrap_danbooru(self, html)
-                gallery_name = temporal_list[0]
-                post_urls += temporal_list[1]
-            print ("Found: "+str(len(post_urls))+" Image Posts")
-            return [gallery_name,post_urls]
-        
-        if("https://rule34.xxx/" in url):
-            post_urls = []
-            for html in html_list:
-                temporal_list = []
-                gallery_name = ""
-                temporal_list += scraper.Scraper.scrap_r34(self, html)
-                gallery_name = temporal_list[0]
-                post_urls += temporal_list[1]
-            print ("Found: "+str(len(post_urls))+" Image Posts")
-            return [gallery_name,post_urls]
-        if("https://hitomi.la/" in url):
-            #This step is also skipped.
-            return (scraper.Scraper.scrap_hitomi(self, html_list[0]),html_list)
-        raise Exception("Couldn't get any post from your url")
-    
-    def _check_url_domain(self,url):
-        """Validates a webpage's domain in url for a supported site"""
-        supported_domains = ["e-hentai.org","danbooru.donmai.us","rule34.xxx","hitomi.la"]
-        
-        for domain in supported_domains:
-            if url.find(domain) > -1:
-                return
-        raise Exception("Not a supported website found")
-    
-    def create_output_dir(self,path,dir_name):
-        """Creates a directory according to path and folder name"""
-        try:
-            #This bullshit right here is to remove character that arent supported in directory names. I got lazy and copy pasted themselves :P
-            dir_name = dir_name.replace("|"," ").replace("<"," ").replace(">", " ").replace(":", " ").replace("\"", " ").replace("\\", " ")
-            dir_name = dir_name.replace("/"," ").replace("?"," ").replace("*", " ")
-            os.makedirs(path+"\\"+dir_name.strip())
-            return path+"\\"+dir_name.strip()
-        except OSError as e:
-            return path+"\\"+dir_name.strip()
+    def core_start(self, url, pages, skip_from, skip_to, wait, retry, wait_retry, output):
+        """
+        Starts the scraping and downloading process.
+        """
+        if self.dan.validate_url(url):
+            self.dan.start(url, pages, skip_from, skip_to, wait, retry, wait_retry, output)
+        elif self.hen.validate_url(url):
+            self.hen.start(url, pages, skip_from, skip_to, wait, retry, wait_retry, output)
+        elif self.r34.validate_url(url):
+            self.r34.start(url, pages, skip_from, skip_to, wait, retry, wait_retry, output)
+        elif self.hit.validate_url(url):
+            if pages:
+                self.hit.start(url=url, from_img=skip_from, to_img=pages, wait=wait, retry=retry, wait_retry=wait_retry, output=output)
+            else:
+                self.hit.start(url=url, from_img=skip_from, to_img=skip_to, wait=wait, retry=retry, wait_retry=wait_retry, output=output)
+
+
         
 @click.command()
 @click.option('-b',help="Path to a txt with multiple urls as: url,pages. One per line."+
-              " This option overrides -u and -p. Throw it between quotes for safe measure")
-@click.option('-u',help="Gallery (or reader) url, throw it between quotes for safe measure")
-@click.option('-p',help="Number of pages, defaults to 1 page if not set",default=1)
-@click.option("-o",help="Output directory, throw it between quotes for safe measure")
-@click.option('-w',help="Wait time between downloads, defaut is 1.0 sec",default=1.0)
-def clickerino(b, u, p, o, w):
+              " This option overrides -u, and -p (-t and -f down work with -b yet). Throw it (the path to txt) between quotes for safe measure.")
+@click.option('-u',help="Gallery (or reader) url, throw it between quotes for safe measure.")
+@click.option('-f',help="Skip from page given.",default=None)
+@click.option('-p',help="Pages to scrap. Default is",default=1)
+@click.option("-o",help="Output directory, throw it between quotes for safe measure.")
+@click.option('-w',help="Wait time between downloads, defaut is 1.0 secobds.",default=1.0)
+@click.option('-r',help="Set number of retries. Default is 3.",default=3)
+@click.option('-x',help="Set wait time between retries. Default is 3.0 seconds.",default=3)
+def clickerino(b, u, p, f, t, o, w, r, x):
     """Suported sites include: ehentai.org, r34.xxx,
     danbooru.donmai and hitomi.la/reader.
     \nWARNING: For hitomi.la, a page from the reader of the
     desired gallery must be given, no need to set -p."""
+    if f:
+        f = int(f)
+    print("-b: {}:{}\n-u: {}:{}\n".format(type(b),b,type(b),b,type(b),b))
+    print("-p: {}:{}\n-f: {}:{}\n-t: {}:{}\n".format(type(p),p,type(f),f,type(t),t))
+    print("-o: {}:{}\n-w: {}:{}\n-r: {}:{}\n".format(type(o),o,type(w),w,type(r),r))
+    print("-x: {}:{}".format(type(x),x))
     if u is None and b is None:
         click.echo("Hey, there is no url, nor text file with links here!")
         click.echo("type --help to know more")
@@ -181,19 +68,21 @@ def clickerino(b, u, p, o, w):
         exit()
 
     if b is not None:
-        batch_start(b,o,w)
+        batch_start(batch=b, skip_from=f, wait=w, retry=r, wait_retry=x, output=o)
     else:
         core = HCore()
-        core.user_input(u, p, o, w)
+        try:
+            core.core_start(url=u, pages=p, skip_from=f, wait=w, retry=r, wait_retry=x, output=o)
+        except Exception as w:
+            print(w)
 
-def batch_start(text_file,output,wait):
-    with open(text_file) as bat:
+def batch_start(batch, skip_from, wait, retry, wait_retry, output):
+    with open(batch) as bat:
         lines = bat.readlines()
     core = HCore()
-    print
     for line in lines:
         tmp = line.strip().split(",")
-        core.user_input(tmp[0],int(tmp[1]),output,wait)
+        core.user_input(url=tmp[0], pages=int(tmp[1]), skip_from=skip_from, wait=wait, retry=retry, wait_retry=wait_retry, output=output)
 
 if __name__ == '__main__':
     clickerino()
