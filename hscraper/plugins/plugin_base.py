@@ -25,7 +25,7 @@ class PluginBase(ABC):
         pass
     
     @abstractmethod
-    def scrap_for_pages(self, url, pages, skip_from=None, skip_to=None):
+    def scrap_for_pages(self, url, pages, skip_from=None):
         """
         Abstract method that scraps html code for pages
         """
