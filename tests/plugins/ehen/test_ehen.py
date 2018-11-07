@@ -26,7 +26,7 @@ class Test(unittest.TestCase):
                          "https://e-hentai.org/g/1087428/b240f1a9ab/?p=3",
                          "https://e-hentai.org/g/1087428/b240f1a9ab/?p=4",]
         
-        url_lists = self.ehen.scrap_for_pages(given_url, 5, None, None)
+        url_lists = self.ehen.scrap_for_pages(given_url, 5, None)
         
         for i in range(len(expected_urls)):
             self.assertEqual(url_lists[i], expected_urls[i])
@@ -54,7 +54,7 @@ class Test(unittest.TestCase):
         expected_ouput = ["https://e-hentai.org/g/1087428/b240f1a9ab/?p=1",
                          "https://e-hentai.org/g/1087428/b240f1a9ab/?p=2",]
             
-        out = self.ehen.scrap_for_pages(given_url, 5, skip_from=1, skip_to=3)
+        out = self.ehen.scrap_for_pages(given_url, 3, skip_from=1)
         for i in range(2):
             self.assertEqual(out[i], expected_ouput[i])
             
@@ -184,7 +184,16 @@ class Test(unittest.TestCase):
         
         self.assertEqual(self.ehen.gen_gal_name(test_url,3,3,3), expected)
         
-    def test_start_clean_needed(self):
+    def test_gen_gal_name_with_cookie(self):
+        """
+        Tests the generation of gallery names from urls
+        """
+        test_url = "https://e-hentai.org/g/1310706/2f687a6f59/"
+        expected = "e-hentai - 1310706 - Artist Galleries ::: Shiory"
+        
+        self.assertEqual(self.ehen.gen_gal_name(test_url,3,3,3), expected)
+        
+    def test_start(self):
         """
         Tests the whole process, given a valid url
         """
@@ -196,7 +205,7 @@ class Test(unittest.TestCase):
         wait_retry = 2
         output = "./"
         
-        self.ehen.start(url, pages, None, None, wait, retry, wait_retry, output)
+        self.ehen.start(url, pages, None, wait, retry, wait_retry, output)
         
     def test_start_page_2(self):
         """
@@ -204,13 +213,13 @@ class Test(unittest.TestCase):
         """
         
         url = "https://e-hentai.org/g/1084652/bbf0db7388/"
-        pages = 1
+        pages = 2
         wait = 2
         retry = 2
         wait_retry = 2
         output = "./"
         
-        self.ehen.start(url, pages, 1, 2, wait, retry, wait_retry, output)
+        self.ehen.start(url, pages, 1, wait, retry, wait_retry, output)
     
     def test_start_clean_needed_page_3_and_4(self):
         """
@@ -218,13 +227,13 @@ class Test(unittest.TestCase):
         """
         
         url = "https://e-hentai.org/g/1087428/b240f1a9ab/"
-        pages = 1
+        pages = 4
         wait = 2
         retry = 2
         wait_retry = 2
         output = "./"
         
-        self.ehen.start(url, pages, 2, 4, wait, retry, wait_retry, output)
+        self.ehen.start(url, pages, 2, wait, retry, wait_retry, output)
         
     
 

@@ -25,7 +25,7 @@ class PluginBase(ABC):
         pass
     
     @abstractmethod
-    def scrap_for_pages(self, url, pages, skip_from=None, skip_to=None):
+    def scrap_for_pages(self, url, pages, skip_from=None):
         """
         Abstract method that scraps html code for pages
         """
@@ -47,10 +47,12 @@ class PluginBase(ABC):
     
     def create_dir(self, path, name):
         """
-        Creates output directory to store downloaded galleries.
+        Creates output directory to store downloaded galleries. This test requires an already existing directory
+        c:\test
         """
-        
-        path = re.sub(r"[<>:\"\\|\?\*^]+", "", path)
+        print(path+name) 
+        path = path.replace("\\","/")
+        path = re.sub(r"[<>\"|\?\*^]+", "", path)
         name = re.sub(r"[<>:\"\\|\?\*^]+", "", name)
         
         if not path.endswith("/"):
@@ -58,7 +60,7 @@ class PluginBase(ABC):
         
         if not os.path.exists(path+name):
             os.makedirs(path+name)
-            
+        print(path+name) 
         return path+name
             
     def write_to(self, path, name, payload):

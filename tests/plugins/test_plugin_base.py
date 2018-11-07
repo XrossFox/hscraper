@@ -86,6 +86,15 @@ class Test(unittest.TestCase):
         
         self.assertTrue(os.path.exists("test_directory/another_test"))
         
+    def test_create_dir_2(self):
+        """
+        Tests the creation of a directory given a full path
+        """
+        
+        self.pb.create_dir(path="c:\\test", name="test_directory")
+        
+        self.assertTrue(os.path.exists("c:\\test\\test_directory"))
+        
     def test_create_invalid_char_dir(self):
         """
         Tests the creation of a directory given an path with invalid characters

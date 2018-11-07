@@ -7,7 +7,7 @@ class Danbooru(plugin_base.PluginBase):
     Class for Danbooru Scraper. Inherits from PluginBase.
     '''
     
-    def start(self, url, pages, skip_from, skip_to, wait, retry, wait_retry, output):
+    def start(self, url, pages, skip_from, wait, retry, wait_retry, output):
         """
         Starts the scraping, and dowloading process
         """
@@ -25,7 +25,7 @@ class Danbooru(plugin_base.PluginBase):
         f_out = self.create_dir(output, self.gen_gal_name(url))
         print("Output Directory is: {}".format(f_out))
         
-        html_pages = self.scrap_for_pages(url, pages, skip_from, skip_to)
+        html_pages = self.scrap_for_pages(url=url, pages=pages, skip_from=skip_from)
         
         for page in html_pages:
             
@@ -135,7 +135,7 @@ class Danbooru(plugin_base.PluginBase):
         links = ["https://danbooru.donmai.us"+a.get("href") for a in tags]
         return links
     
-    def scrap_for_pages(self, url, pages, skip_from=None, skip_to=None):
+    def scrap_for_pages(self, url, pages, skip_from=None):
         """
         Returns a list of urls for each page. Doesn't really scrap anything. You can set a range
         to skip certain pages (exclusive in both ends). If skip_from is set, it will skip pages until
@@ -144,8 +144,7 @@ class Danbooru(plugin_base.PluginBase):
 
         url_lists = list()
         
-        if not skip_to:
-            skip_to = pages
+        skip_to = pages
             
         if not skip_from:
             skip_from = 0

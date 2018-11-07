@@ -8,7 +8,7 @@ class EhenScraper(plugin_base.PluginBase):
     Class for Ehentai Scraper. Inherits from PluginBase.
     '''
 
-    def start(self, url, pages, skip_from, skip_to, wait, retry, wait_retry, output):
+    def start(self, url, pages, skip_from, wait, retry, wait_retry, output):
         """
         Starts the scraping, and dowloading process
         """
@@ -24,7 +24,7 @@ class EhenScraper(plugin_base.PluginBase):
         f_out = self.create_dir(output, self.gen_gal_name(url, wait, retry, wait_retry))
         print("Output Directory is: {}".format(f_out))
         
-        html_pages = self.scrap_for_pages(url, pages, skip_from, skip_to)
+        html_pages = self.scrap_for_pages(url, pages, skip_from)
         
         for page in html_pages:
             
@@ -63,7 +63,7 @@ class EhenScraper(plugin_base.PluginBase):
         """
         Creates a name for the gallery from the title of the gallery.
         """
-        req = self.get_request(url, wait, retry, wait_retry)
+        req = self.get_request(url, wait, retry, wait_retry, cookies=dict(nw="1"))
         
         h = BeautifulSoup(req['payload'], "html.parser")
         
@@ -81,7 +81,7 @@ class EhenScraper(plugin_base.PluginBase):
             return True;
         return False
     
-    def scrap_for_pages(self, url, pages, skip_from=None, skip_to=None):
+    def scrap_for_pages(self, url, pages, skip_from=None):
         """
         Returns a list of urls for each page given an ehentai url.
         Doesn't really scrap anything. You can set a range to skip certain pages (exclusive in both ends).
@@ -91,8 +91,7 @@ class EhenScraper(plugin_base.PluginBase):
         #request data for retrieval
         url_lists = list()
         
-        if not skip_to:
-            skip_to = pages
+        skip_to = pages
             
         if not skip_from:
             skip_from = 0
