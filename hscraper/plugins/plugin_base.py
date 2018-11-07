@@ -50,7 +50,7 @@ class PluginBase(ABC):
         Creates output directory to store downloaded galleries. This test requires an already existing directory
         c:\test
         """
-        print(path+name) 
+
         path = path.replace("\\","/")
         path = re.sub(r"[<>\"|\?\*^]+", "", path)
         name = re.sub(r"[<>:\"\\|\?\*^]+", "", name)
@@ -60,15 +60,19 @@ class PluginBase(ABC):
         
         if not os.path.exists(path+name):
             os.makedirs(path+name)
-        print(path+name) 
+
         return path+name
             
     def write_to(self, path, name, payload):
         """
         Writes a stream of bytes (payload) to a path and a name.
         """
-        path = re.sub(r"[<>:\"\\|\?\*^]+", "", path)
-        name = re.sub(r"[<>:/\"\\|\?\*^]+", "", name)
+        path = path.replace("\\","/")
+        path = re.sub(r"[<>\"|\?\*^]+", "", path)
+        name = re.sub(r"[<>:\"\\|\?\*^]+", "", name)
+        
+        if not path.endswith("/"):
+            path = path+"/"
         
         if not path:
             path="."
