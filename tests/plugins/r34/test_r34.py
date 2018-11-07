@@ -51,7 +51,7 @@ class Test(unittest.TestCase):
         expected_ouput = ["https://rule34.xxx/index.php?page=post&s=list&tags=yorha_2b+&pid=42",
                           "https://rule34.xxx/index.php?page=post&s=list&tags=yorha_2b+&pid=84"]
             
-        out = self.r34.scrap_for_pages(given_url, 4, skip_from=1, skip_to=3)
+        out = self.r34.scrap_for_pages(given_url, 3, skip_from=1)
         for i in range(2):
             self.assertEqual(out[i], expected_ouput[i])
             
@@ -179,7 +179,7 @@ class Test(unittest.TestCase):
         wait_retry = 3
         output = "./"
         
-        self.r34.start(url, pages, None, None, wait, retry, wait_retry, output)
+        self.r34.start(url, pages, None, wait, retry, wait_retry, output)
     
     def test_start_page_2(self):
         """
@@ -187,13 +187,13 @@ class Test(unittest.TestCase):
         """
         
         url = "https://rule34.xxx/index.php?page=post&s=list&tags=samus_aran+-3d+-source_filmmaker++-futanari+"
-        pages = 1
+        pages = 2
         wait = 3
         retry = 3
         wait_retry = 3
         output = "./"
         
-        self.r34.start(url, pages, 1, 2, wait, retry, wait_retry, output)
+        self.r34.start(url, pages, 1, wait, retry, wait_retry, output)
         
     def test_start_page_3_and_4(self):
         """
@@ -201,13 +201,13 @@ class Test(unittest.TestCase):
         """
         
         url = "https://rule34.xxx/index.php?page=post&s=list&tags=-futanari+-3d+mercy+"
-        pages = 1
+        pages = 4
         wait = 3
         retry = 3
         wait_retry = 3
         output = "./"
         
-        self.r34.start(url, pages, 2, 4, wait, retry, wait_retry, output)
+        self.r34.start(url, pages, 2, wait, retry, wait_retry, output)
         
 
 
