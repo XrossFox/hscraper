@@ -41,7 +41,7 @@ class HitomiScraper(plugin_base.PluginBase):
         
         return url
     
-    def scrap_for_posts(self, url, wait, retry, wait_retry, from_img=None, to_img=None, ):
+    def scrap_for_posts(self, url, wait, retry, wait_retry, from_img=None, to_img=None):
         """
         Scraps all post url in a given page. Returns a list of links to each image in the reader.
         If it receives an invalid url or None, it returns None. You can set a range
@@ -65,7 +65,9 @@ class HitomiScraper(plugin_base.PluginBase):
         
         for text in texts:
             tmp = text.split("/")
-            if (int(tmp[-2][-1]) % 2) > 0 :
+            if int(tmp[-2][-1]) in [0,1]:
+                text = text.replace("//g.","https://aa.")
+            elif (int(tmp[-2][-1]) % 2) > 0 :
                 text = text.replace("//g.","https://ba.")
             else: text = text.replace("//g.","https://aa.")
             urls.append(text)

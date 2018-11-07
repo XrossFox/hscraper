@@ -75,27 +75,57 @@ class Test(unittest.TestCase):
         
     def test_scrap_for_posts_1(self):
         """
-        Tests scrap_for_posts returns valid post urls using a regular expression
+        Tests scrap_for_posts returns valid post urls using a regular expression. galleries that end
+        in odd number have an url: aa.like.this
         """
         
         url = "https://hitomi.la/reader/1305683.html#1"
         
         response = self.hit.scrap_for_posts(url, 2, 1, 1, 9)
         
-        pat = re.compile(r'\bhttps:\/\/[ab]*a\.hitomi\.la\/galleries\/[\d]+\/[\S]+\b')
+        pat = re.compile(r'\bhttps:\/\/ba\.hitomi\.la\/galleries\/[\d]+\/[\S]+\b')
         for post in response:
             self.assertTrue(pat.match(post))
             
     def test_scrap_for_posts_2(self):
         """
-        Tests scrap_for_posts returns valid post urls using a regular expression
+        Tests scrap_for_posts returns valid post urls using a regular expression. galleries that end in 
+        even number have an url: ab.url.like.this
         """
         
         url = "https://hitomi.la/reader/1307822.html#1"
         
         response = self.hit.scrap_for_posts(url, 2, 1, 1, 9)
         
-        pat = re.compile(r'\bhttps:\/\/[ab]*a\.hitomi\.la\/galleries\/[\d]+\/[\S]+\b')
+        pat = re.compile(r'\bhttps:\/\/aa\.hitomi\.la\/galleries\/[\d]+\/[\S]+\b')
+        for post in response:
+            self.assertTrue(pat.match(post))
+
+    def test_scrap_for_posts_3(self):
+        """
+        Tests scrap_for_posts returns valid post urls using a regular expression. galleries that end in 1 or 0
+        have an url like this aa.rest.of.the.url
+        """
+        
+        url = "https://hitomi.la/reader/1027141.html#1"
+        
+        response = self.hit.scrap_for_posts(url, 2, 1, 1, 9)
+        
+        pat = re.compile(r'\bhttps:\/\/aa\.hitomi\.la\/galleries\/[\d]+\/[\S]+\b')
+        for post in response:
+            self.assertTrue(pat.match(post))
+            
+    def test_scrap_for_posts_4(self):
+        """
+        Tests scrap_for_posts returns valid post urls using a regular expression. galleries that end in 1 or 0
+        have an url like this aa.rest.of.the.url
+        """
+        
+        url = "https://hitomi.la/reader/1311140.html#1"
+        
+        response = self.hit.scrap_for_posts(url, 2, 1, 1, 9)
+        
+        pat = re.compile(r'\bhttps:\/\/aa\.hitomi\.la\/galleries\/[\d]+\/[\S]+\b')
         for post in response:
             self.assertTrue(pat.match(post))
             
@@ -239,6 +269,36 @@ class Test(unittest.TestCase):
         url = "https://hitomi.la/galleries/1307822.html"
         from_img = 4
         to_img = 15
+        wait = 3
+        retry = 3
+        wait_retry = 3
+        output = "./"
+        
+        self.hit.start(url, from_img, to_img, wait, retry, wait_retry, output)
+        
+    def test_start_3(self):
+        """
+        Tests the whole process, given a valid url, given 0 pages, it must scrap all images.
+        """
+        
+        url = "https://hitomi.la/galleries/1027141.html"
+        from_img = 0
+        to_img = 0
+        wait = 3
+        retry = 3
+        wait_retry = 3
+        output = "./"
+        
+        self.hit.start(url, from_img, to_img, wait, retry, wait_retry, output)
+        
+    def test_start_4(self):
+        """
+        Tests the whole process, given a valid url, given 0 pages, it must scrap all images.
+        """
+        
+        url = "https://hitomi.la/galleries/1311140.html"
+        from_img = 0
+        to_img = 0
         wait = 3
         retry = 3
         wait_retry = 3
