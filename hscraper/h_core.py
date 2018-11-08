@@ -63,7 +63,7 @@ def clickerino(b, u, f, p, o, w, r, x):
         exit()
 
     if b is not None:
-        batch_start(batch=b, skip_from=f, wait=w, retry=r, wait_retry=x, output=o)
+        batch_start(batch=b, wait=w, retry=r, wait_retry=x, output=o)
     else:
         core = HCore()
         try:
@@ -71,13 +71,23 @@ def clickerino(b, u, f, p, o, w, r, x):
         except Exception as w:
             print(w)
 
-def batch_start(batch, skip_from, wait, retry, wait_retry, output):
+def batch_start(batch, wait, retry, wait_retry, output):
     with open(batch) as bat:
         lines = bat.readlines()
     core = HCore()
     for line in lines:
         tmp = line.strip().split(",")
-        core.user_input(url=tmp[0], pages=int(tmp[1]), skip_from=skip_from, wait=wait, retry=retry, wait_retry=wait_retry, output=output)
+        url = tmp[0]
+        pages = int(tmp[1])
+        print("url: {}\npages: {}".format(tmp[0], tmp[1]))
+        try:
+            if tmp[1]:
+                print("skip_from: {}".format(tmp[2]))
+                skip_from = int(tmp[2])
+        except:
+            skip_from = None
+        print("url: "+url+ "\npages: " + str(pages) +"\nskip: "+ str(skip_from)+"\nwait: "+ str(wait)+"\nretry: "+ str(retry) +"\wait r: "+ str(wait_retry) +"\noutput: "+ str(output))  
+        core.core_start(url=url, pages=pages, skip_from=skip_from, wait=wait, retry=retry, wait_retry=wait_retry, output=output)
 
 if __name__ == '__main__':
     clickerino()
