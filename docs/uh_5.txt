@@ -1,1 +1,0 @@
-As a user, i want to load urls and pages from a text file, so it can do a batch download.

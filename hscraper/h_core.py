@@ -75,14 +75,11 @@ def batch_start(batch, wait, retry, wait_retry, output):
         tmp = line.strip().split(",")
         url = tmp[0]
         pages = int(tmp[1])
-        print("url: {}\npages: {}".format(tmp[0], tmp[1]))
         try:
             if tmp[1]:
-                print("skip_from: {}".format(tmp[2]))
                 skip_from = int(tmp[2])
         except:
             skip_from = None
-        print("url: "+url+ "\npages: " + str(pages) +"\nskip: "+ str(skip_from)+"\nwait: "+ str(wait)+"\nretry: "+ str(retry) +"\wait r: "+ str(wait_retry) +"\noutput: "+ str(output))  
         core.core_start(url=url, pages=pages, skip_from=skip_from, wait=wait, retry=retry, wait_retry=wait_retry, output=output)
 
 if __name__ == '__main__':

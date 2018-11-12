@@ -1,1 +1,0 @@
-As an user i want to downloas images in publications from hitomi.la 
