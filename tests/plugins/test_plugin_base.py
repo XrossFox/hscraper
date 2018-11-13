@@ -110,6 +110,134 @@ class Test(unittest.TestCase):
         
         self.pb.write_to(path="", name="le_test.png", payload=bytes(resp['payload']))
         
+    def test_gen_string_header(self):
+        """
+        start() method should call thos at the beginning to print the info of the current task.
+        """
+        
+        url = "test_url"
+        pages = 5
+        skip_from = 3
+        wait = 3
+        retry = 3
+        wait_retry = 3
+        output = "test_ouput_path"
+        
+        string = self.pb.gen_string_header(url, pages, skip_from, wait, retry, wait_retry, output)
+        
+        expected_string = ("="*70+"\n\n{0:20}:{1}\n{2:20}:{3}\n{4:20}:{5}\n{6:20}:{7}\n{8:20}:{9}\n{10:20}:{11}\n{12:20}:{13}\n".format(
+            "Url",url[:50],"Pages",pages,"From Page",skip_from,"Wait Time",wait,
+            "Retries",retry,"Wait Between Retries",wait_retry,"Ouput directorty",output
+            ))
+        
+        self.assertEqual(string, expected_string)
+        
+        print(string)
+        
+    def test_gen_string_header_no_skip_from(self):
+        """
+        start() method should call thos at the beginning to print the info of the current task. Test when
+        no skip_from param has been passed.
+        """
+        
+        url = "test_url"
+        pages = 5
+        skip_from = None
+        wait = 3
+        retry = 3
+        wait_retry = 3
+        output = "test_ouput_path"
+        
+        string = self.pb.gen_string_header(url, pages, skip_from, wait, retry, wait_retry, output)
+        
+        expected_string = ("="*70+"\n\n{0:20}:{1}\n{2:20}:{3}\n{4:20}:{5}\n{6:20}:{7}\n{8:20}:{9}\n{10:20}:{11}\n{12:20}:{13}\n".format(
+            "Url",url[:50],"Pages",pages,"From Page","1","Wait Time",wait,
+            "Retries",retry,"Wait Between Retries",wait_retry,"Ouput directorty",output
+            ))
+        
+        self.assertEqual(string, expected_string)
+        
+        print(string)
+        
+    def test_gen_invalid_url_string(self):
+        """
+        start() method calls this when no valid url is passed. 
+        """
+        url = "Test_URL.com"
+        
+        string = self.pb.gen_invalid_url_string(url)
+        
+        expected_string = ("\n"+">"*4+"Invalid Url in: {}".format(url)+"\n")
+        
+        self.assertEqual(string, expected_string)
+        
+        print(string)
+        
+    def test_gen_valid_url_string(self):
+        """
+        start() method calls this when a valid url is passed. 
+        """
+        url = "Test_URL.com"
+        
+        string = self.pb.gen_valid_url_string(url)
+        
+        expected_string = ("Valid Url in: {}".format(url))
+        
+        self.assertEqual(string, expected_string)
+        
+        print(string)
+        
+    def test_gen_scraping_page_string(self):
+        """
+        start() method calls this when scraping a given page. 
+        """
+        url = "Test_URL.com"
+        
+        string = self.pb.gen_scraping_page_string(url)
+        
+        expected_string = ("\n"+"+"*70+"\nCurrent page: {}\n".format(url)+"-"*70+"\n")
+        
+        self.assertEqual(string, expected_string)
+        
+        print(string)
+        
+    def test_gen_downloading_string(self):
+        """
+        start() method calls this when downloading an image. 
+        """
+        path = "c:/test/path"
+        name = "name.jpg"
+        
+        string = self.pb.gen_downloading_string(path,name)
+        
+        expected_string = ("Downloading: {}/{}".format(path,name))
+        
+        self.assertEqual(string, expected_string)
+        
+        print(string)
+        
+    def test_gen_foot_string(self):
+        """
+        start() method calls this when finished to show output info. 
+        """
+        downloaded = 65
+        pages = 4
+        skipped = 1
+        failed = 10
+        list_failed = ["fail {}".format(n) for n in range(10)]
+        
+        l_s = ""
+        for s in list_failed:
+            l_s += s+"\n"
+        
+        string = self.pb.gen_foot_string(downloaded, pages, skipped, failed, list_failed)
+        
+        expected_string = ("="*70+"\n{0:20}:{1}\n{2:20}:{3}\n{4:20}:{5}\n{6:20}:{7}\n{8:20}\n{9}".format(
+            "Downloaded",downloaded,"Pages",pages,"Skipped",skipped,"Failed",failed,":",l_s)+"="*70)
+        
+        self.assertEqual(string, expected_string)
+        print(string)
+        
     
 
 if __name__ == "__main__":

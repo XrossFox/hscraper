@@ -10,7 +10,7 @@ class PluginBase(ABC):
     Base class for scraper plug-ins.
     '''
     @abstractmethod
-    def start(self, url, pages, skip_from, skip_to, wait, retry, wait_retry, output):
+    def start(self, url, pages, skip_from, wait, retry, wait_retry, output):
         """
         Abstract method for control flow
         """
@@ -125,3 +125,49 @@ class PluginBase(ABC):
                 
         sleep(wait)
         return res
+    
+    def gen_string_header(self, url, pages, skip_from, wait, retry, wait_retry, output):
+        """
+        Returns message that has information about this particular run.
+        """
+        if not skip_from:
+            skip_from = 1
+        return ("="*70+"\n\n{0:20}:{1}\n{2:20}:{3}\n{4:20}:{5}\n{6:20}:{7}\n{8:20}:{9}\n{10:20}:{11}\n{12:20}:{13}\n".format(
+            "Url",url[:50],"Pages",pages,"From Page",skip_from,"Wait Time",wait,
+            "Retries",retry,"Wait Between Retries",wait_retry,"Ouput directorty",output
+            ))
+    
+    def gen_invalid_url_string(self,url):
+        """
+        Returns a message when an invalid url is found.
+        """
+        return ("\n"+">"*4+"Invalid Url in: {}".format(url)+"\n")
+    
+    def gen_valid_url_string(self,url):
+        """
+        Returns a message when a valid url is found.
+        """
+        return ("Valid Url in: {}".format(url))
+    
+    def gen_scraping_page_string(self,url):
+        """
+        Returns a message about the current page that is being scraped.
+        """
+        return ("\n"+"+"*70+"\nCurrent page: {}\n".format(url)+"-"*70+"\n")
+    
+    def gen_downloading_string(self, path, name):
+        """
+        Returns a message about the current image that is being downloaded. 
+        """
+        return ("Downloading: {}/{}".format(path,name))
+        
+    def gen_foot_string(self, downloaded, pages, skipped, failed, list_failed):
+        """
+        Returns a message about the results of a particular run.
+        """
+        l_s = ""
+        for s in list_failed:
+            l_s += s+"\n"
+        
+        return ("="*70+"\n{0:20}:{1}\n{2:20}:{3}\n{4:20}:{5}\n{6:20}:{7}\n{8:20}\n{9}".format(
+            "Downloaded",downloaded,"Pages",pages,"Skipped",skipped,"Failed",failed,":",l_s)+"="*70)
