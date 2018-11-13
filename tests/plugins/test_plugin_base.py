@@ -238,6 +238,30 @@ class Test(unittest.TestCase):
         self.assertEqual(string, expected_string)
         print(string)
         
+    def test_gen_page_not_found_string(self):
+        """
+        start() method calls this when a page is not found
+        """
+        page_url = "test_url"
+    
+        string = self.pb.gen_page_not_found_string(page_url)
+    
+        expected_string = "Couldnt find page: test_url"
+    
+        self.assertEqual(string, expected_string)
+        
+    def test_gen_img_not_found_string(self):
+        """
+        start() method calls this when an image is not found
+        """
+        img_url = "test_url"
+    
+        string = self.pb.gen_img_not_found_string(img_url)
+    
+        expected_string = "Couldnt find image: test_url"
+    
+        self.assertEqual(string, expected_string)
+        
     
 
 if __name__ == "__main__":

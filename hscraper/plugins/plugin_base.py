@@ -171,3 +171,15 @@ class PluginBase(ABC):
         
         return ("="*70+"\n{0:20}:{1}\n{2:20}:{3}\n{4:20}:{5}\n{6:20}:{7}\n{8:20}\n{9}".format(
             "Downloaded",downloaded,"Pages",pages,"Skipped",skipped,"Failed",failed,":",l_s)+"="*70)
+        
+    def gen_page_not_found_string(self, page_url):
+        """
+        Returns a message about the page that couldnt be found
+        """
+        return ("Couldnt find page: {}".format(page_url))
+
+    def gen_img_not_found_string(self, img_url):
+        """
+        Returns a message about the image that couldnt be found
+        """
+        return ("Couldnt find image: {}".format(img_url))
