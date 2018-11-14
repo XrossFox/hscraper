@@ -15,23 +15,27 @@ class EhenScraper(plugin_base.PluginBase):
         
         page_not_found = []
         image_not_found = []
+        downloaded = 0
+        
+        print(self.gen_string_header(url, pages, skip_from, wait, retry, wait_retry, output))
         
         if not self.validate_url(url):
-            raise Exception("Not a valid URL: {}".format(url))
+            print(self.gen_invalid_url_string(url))
+            raise Exception("Not a valid URL")
         else:
-            print("Valid URL: {}".format(url))
+            print(self.gen_valid_url_string(url))
         
         f_out = self.create_dir(output, self.gen_gal_name(url, wait, retry, wait_retry))
-        print("Output Directory is: {}".format(f_out))
         
         html_pages = self.scrap_for_pages(url, pages, skip_from)
         
         for page in html_pages:
             
-            print("Scraping page: {}".format(page))
+            print(self.gen_scraping_page_string(page))
             posts = self.scrap_for_posts(page, wait, retry, wait_retry)
             
             if posts == None:
+                print(self.gen_page_not_found_string(posts))
                 page_not_found.append(page)
                 continue
             
@@ -40,24 +44,22 @@ class EhenScraper(plugin_base.PluginBase):
                 image = self.scrap_for_images(post, wait, retry, wait_retry)
 
                 if image == None:
+                    print(self.gen_img_not_found_string(image[1]))
                     image_not_found.append(post)
                     continue
                 
-                print("Downloading image in: {}".format(image[1]))
                 img_data = self.get_request(image[1], wait, retry, wait_retry)
                 
-                print("Downloading image to: {}/{}.{}".format(f_out,image[0],image[2]))
+                print(self.gen_downloading_string(f_out, image[0]+"."+image[2]))
                 self.write_to(f_out, "{}.{}".format(image[0],image[2]), img_data['payload'])
+                downloaded += 1
                 
-        if len(page_not_found) > 0:
-            print("Pages not found: {}".format(len(page_not_found)))
-            for page in page_not_found:
-                print("-"*4+page)
-                
-        if len(image_not_found) > 0:
-            print("Images not found: {}".format(len(image_not_found)))
-            for img in image_not_found:
-                print("+"*4+img)
+        failed = len(page_not_found) + len(image_not_found)
+        list_failed = []
+        list_failed.extend(page_not_found)
+        list_failed.extend(image_not_found)
+             
+        print(self.gen_foot_string(downloaded, pages, skip_from, failed, list_failed))
     
     def gen_gal_name(self, url, wait, retry, wait_retry):
         """
