@@ -86,48 +86,49 @@ class HitomiScraper(plugin_base.PluginBase):
         Starts the scraping, and dowloading process
         """
         
+        print(self.gen_string_header(url, to_img, from_img, wait, retry, wait_retry, output))
+        
         page_not_found = []
         image_not_found = []
+        downloaded = 0
         
         if not self.validate_url(url):
-            raise Exception("Not a valid URL: {}".format(url))
+            print(self.gen_invalid_url_string(url))
+            raise Exception("Not a valid URL")
         else:
-            print("Valid URL: {}".format(url))
+            print(self.gen_valid_url_string(url))
         
         f_out = self.create_dir(output, self.gen_gal_name(url))
-        print("Output Directory is: {}".format(f_out))
         
         html_pages = self.scrap_for_pages(url)
         
         for page in [html_pages]:
             
-            print("Scraping page: {}".format(page))
+            print(self.gen_scraping_page_string(page))
             posts = self.scrap_for_posts(page, wait, retry, wait_retry, from_img, to_img)
 
             
             for post in posts:
                 
+                #print(self.gen_page_not_found_string(posts))
                 image = self.scrap_for_images(post)
 
                 if image == None:
+                    print(self.gen_img_not_found_string(image[1]))
                     image_not_found.append(post)
                     continue
                 
-                print("Downloading image in: {}".format(image[1]))
                 img_data = self.get_request(image[1], wait, retry, wait_retry)
                 
-                print("Downloading image to: {}/{}.{}".format(f_out,image[0],image[2]))
+                print(self.gen_downloading_string(f_out, image[0]+"."+image[2]))
                 self.write_to(f_out, "{}.{}".format(image[0],image[2]), img_data['payload'])
                 
-        if len(page_not_found) > 0:
-            print("Pages not found: {}".format(len(page_not_found)))
-            for page in page_not_found:
-                print("-"*4+page)
-                
-        if len(image_not_found) > 0:
-            print("Images not found: {}".format(len(image_not_found)))
-            for img in image_not_found:
-                print("+"*4+img)
+        failed = len(page_not_found) + len(image_not_found)
+        list_failed = []
+        list_failed.extend(page_not_found)
+        list_failed.extend(image_not_found)
+             
+        print(self.gen_foot_string(downloaded, to_img, from_img, failed, list_failed))
      
     
     def validate_url(self, url):
