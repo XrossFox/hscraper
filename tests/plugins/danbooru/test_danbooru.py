@@ -95,6 +95,14 @@ class Test(unittest.TestCase):
         
         self.assertFalse(self.dan.validate_url(bad_url))
         
+    def test_validate_url_substring(self):
+        """
+        Tests that there is only an url present, and not in a form of a substring.
+        """
+        given_url = "https://danbooru.donmai.us/posts?tags=short_sleeves sub"
+        
+        self.assertFalse(self.dan.validate_url(given_url))
+        
     
     def test_scrap_for_posts(self):
         """
