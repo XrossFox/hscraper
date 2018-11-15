@@ -46,6 +46,22 @@ class Test(unittest.TestCase):
         given_urls = "https://hitomi.la/reader/1307822.html#1"
         
         self.assertTrue(self.hit.validate_url(given_urls))
+        
+    def test_validate_url_substring_gallery(self):
+        """
+        Tests that there is only an url present, and not in a form of a substring.
+        """
+        given_urls = "https://hitomi.la/galleries/1307822.html im a substring"
+        
+        self.assertFalse(self.hit.validate_url(given_urls))
+        
+    def test_validate_url_substring_reader(self):
+        """
+        Tests that there is only an url present, and not in a form of a substring.
+        """
+        given_urls = "https://hitomi.la/reader/1307822.html#1 im also a substring"
+        
+        self.assertFalse(self.hit.validate_url(given_urls))
 
     def test_scrap_for_pages_1(self):
         """

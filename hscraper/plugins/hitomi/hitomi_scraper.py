@@ -132,7 +132,8 @@ class HitomiScraper(plugin_base.PluginBase):
      
     
     def validate_url(self, url):
-        if re.match(r"\bhttps:\/\/hitomi\.la\/reader\/[\d]+\.html#[\d]+\b", url) or re.match(r"\bhttps:\/\/hitomi\.la\/galleries\/[\d]+\.html\b", url):
-            return True
+        """
+        Validates the url from either, the gallery or the reader
+        """
+        return re.match(r"^https:\/\/hitomi\.la\/reader\/[\d]+\.html#[\d]+$", url) or re.match(r"^https:\/\/hitomi\.la\/galleries\/[\d]+\.html$", url)
         
-        return False
