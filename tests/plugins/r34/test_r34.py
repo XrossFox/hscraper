@@ -1,7 +1,7 @@
 import unittest
 import sys
 sys.path.append('../../../hscraper/plugins')
-sys.path.append('../../../hscraper/plugins/danbooru')
+sys.path.append('../../../hscraper/plugins/r34')
 import r34_scraper
 import re
 
@@ -71,6 +71,15 @@ class Test(unittest.TestCase):
             self.assertTrue(self.r34.validate_url(url))
         
         self.assertFalse(self.r34.validate_url(bad_url))
+        
+    def test_validate_url_substring(self):
+        """
+        Tests that there is only an url present, and not in a form of a substring.
+        """
+        
+        given_url = "https://rule34.xxx/index.php?page=post&s=list&tags=yorha_2b+&pid=42 a substring"
+        
+        self.assertFalse(self.r34.validate_url(given_url))
         
     def test_scrap_for_posts(self):
         """
