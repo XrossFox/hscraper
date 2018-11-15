@@ -79,9 +79,7 @@ class EhenScraper(plugin_base.PluginBase):
         """
         Validates URL using a regular expression.
         """
-        if re.match(r"https:\/\/e-hentai\.org\/g\/[\d]+\/[\S]{10}[\/\?p=\d+]+", url):
-            return True;
-        return False
+        return re.match(r"^https:\/\/e-hentai\.org\/g\/[\d]+\/[\S]{10}[\/\?p=\d+]+$", url)
     
     def scrap_for_pages(self, url, pages, skip_from=None):
         """

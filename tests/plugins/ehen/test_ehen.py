@@ -76,6 +76,24 @@ class Test(unittest.TestCase):
         
         self.assertFalse(self.ehen.validate_url(bad_url))
         
+    def test_validate_url_substring(self):
+        """
+        Tests that there is only an url present, and not in a form of a substring.
+        """
+        
+        given_url = "https://e-hentai.org/g/1087428/b240f1a9ab/ a substring"
+        
+        self.assertFalse(self.ehen.validate_url(given_url))
+        
+    def test_validate_url_substring_2(self):
+        """
+        Tests that there is only an url present, and not in a form of a substring. (url with page number)
+        """
+        
+        given_url = "https://e-hentai.org/g/1087428/b240f1a9ab/?p=1 a substring"
+        
+        self.assertFalse(self.ehen.validate_url(given_url))
+        
     def test_scrap_for_posts(self):
         """
         Tests scrap_for_posts returns valid post urls using a regular expression
