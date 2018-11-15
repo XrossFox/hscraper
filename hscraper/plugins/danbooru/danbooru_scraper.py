@@ -85,7 +85,7 @@ class Danbooru(plugin_base.PluginBase):
         """
         Validates URL using a regular expression.
         """
-        if re.match(r"https:\/\/danbooru\.donmai\.us\/posts\?[page=\d+&]*tags=[\w\d+]+", url):
+        if re.match(r"^https:\/\/danbooru\.donmai\.us\/posts\?[page=\d+&]*tags=[\w\d+]+$", url):
             return True;
         return False
     
