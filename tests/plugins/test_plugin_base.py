@@ -1,11 +1,10 @@
 import sys
 import os
-sys.path.append('../../hscraper/plugins')
+sys.path.append('../../hscraper')
 
 import unittest
 from bs4 import BeautifulSoup
-
-import plugin_base
+from plugins import plugin_base
 
 class TestClass(plugin_base.PluginBase):
     

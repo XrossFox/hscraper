@@ -1,8 +1,8 @@
 import unittest
 import sys
-sys.path.append('../../../hscraper/plugins')
-sys.path.append('../../../hscraper/plugins/r34')
-import r34_scraper
+sys.path.append('../../../hscraper')
+
+from plugins.r34 import r34_scraper
 import re
 
 class Test(unittest.TestCase):

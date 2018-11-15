@@ -1,11 +1,10 @@
 import sys
-sys.path.append('../../../hscraper/plugins')
-sys.path.append('../../../hscraper/plugins/ehen')
+sys.path.append('../../../hscraper')
 
 import re
 
 import unittest
-import ehen_scraper
+from plugins.ehen import ehen_scraper
 
 class Test(unittest.TestCase):
 

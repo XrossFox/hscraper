@@ -1,4 +1,4 @@
-import plugin_base
+from plugins import plugin_base
 import re
 from bs4 import BeautifulSoup
 

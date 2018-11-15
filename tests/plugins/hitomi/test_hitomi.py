@@ -1,7 +1,7 @@
 import sys
-sys.path.append('../../../hscraper/plugins')
-sys.path.append('../../../hscraper/plugins/hitomi')
-import hitomi_scraper
+sys.path.append('../../../hscraper')
+
+from plugins.hitomi import hitomi_scraper
 import unittest
 import re
 

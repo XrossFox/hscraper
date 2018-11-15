@@ -1,7 +1,7 @@
 import sys
-sys.path.append('../../../hscraper/plugins')
-sys.path.append('../../../hscraper/plugins/danbooru')
-import danbooru_scraper
+sys.path.append('../../../hscraper')
+
+from plugins.danbooru import  danbooru_scraper
 import unittest
 import re
 
