@@ -39,6 +39,8 @@ class HCore():
             self.r34.start(url, pages, skip_from, wait, retry, wait_retry, output)
         elif self.hit.validate_url(url):
             self.hit.start(url=url, from_img=skip_from, to_img=pages, wait=wait, retry=retry, wait_retry=wait_retry, output=output)
+        else:
+            print("What the hell just happened? No valid url found :c")
                 
 @click.command()
 @click.option('-b',help="(Absolute) Path to a txt with multiple urls as: url,page[,skip_from]. One per line."+
@@ -47,7 +49,7 @@ class HCore():
 @click.option('-f',help="Skip from page -f to page -p.",default=None)
 @click.option('-p',help="Pages to scrap. Default is 1",default=1)
 @click.option("-o",help="Output directory, throw it between quotes for safe measure.")
-@click.option('-w',help="Wait time between http requests, defaut is 3.0 secobds.",default=3.0)
+@click.option('-w',help="Wait time between http requests, defaut is 3.0 seconds.",default=3.0)
 @click.option('-r',help="Set number of retries. Default is 3.",default=3)
 @click.option('-x',help="Set wait time between retries. Default is 3.0 seconds.",default=3.0)
 def clickerino(b, u, f, p, o, w, r, x):

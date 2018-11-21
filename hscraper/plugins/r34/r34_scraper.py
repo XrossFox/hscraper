@@ -69,7 +69,7 @@ class R34Scraper(plugin_base.PluginBase):
         """
         Validates URL using a regular expression.
         """
-        if re.match(r"^https:\/\/rule34\.xxx\/index\.php\?page=post&s=list&tags=[\S]+\+(&pid=[\d]+)*$", url):
+        if re.match(r"^https:\/\/rule34\.xxx\/index\.php\?page=post&s=list&tags=[\S]+[\+]*(&pid=[\d]+)*$", url):
             return True;
         return False
     

@@ -63,7 +63,8 @@ class Test(unittest.TestCase):
         given_urls = ["https://rule34.xxx/index.php?page=post&s=list&tags=yorha_2b+&pid=42",
                     "https://rule34.xxx/index.php?page=post&s=list&tags=yorha_2b+",
                     "https://rule34.xxx/index.php?page=post&s=list&tags=yorha_a2+-futanari+&pid=0",
-                    "https://rule34.xxx/index.php?page=post&s=list&tags=yorha_a2+-futanari+"
+                    "https://rule34.xxx/index.php?page=post&s=list&tags=yorha_a2+-futanari+",
+                    "https://rule34.xxx/index.php?page=post&s=list&tags=houtengeki"
                           ]
         bad_url = "wrong!"
         
