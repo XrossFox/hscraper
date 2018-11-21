@@ -43,7 +43,7 @@ class R34Scraper(plugin_base.PluginBase):
                 image = self.scrap_for_images(post, wait, retry, wait_retry)
 
                 if image == None:
-                    print(self.gen_img_not_found_string(image[1]))
+                    print(self.gen_img_not_found_string(post))
                     image_not_found.append(post)
                     continue
                 
@@ -103,14 +103,15 @@ class R34Scraper(plugin_base.PluginBase):
                                 "style":"font-weight: bold;"})
         img_tag_normal = soup.find(id="image")
         video_tag = soup.find(name="video",id="gelcomVideoPlayer")
-        
-        
-        if img_tag_original:
-            img_url = img_tag_original.get("href")
-        elif img_tag_normal:
-            img_url = img_tag_normal.get("src")
-        else:
-            img_url = video_tag.find("source").get("src")    
+        try:
+            if img_tag_original:
+                img_url = img_tag_original.get("href")
+            elif img_tag_normal:
+                img_url = img_tag_normal.get("src")
+            else:
+                img_url = video_tag.find("source").get("src")
+        except:
+            return None
         
         name = url.split("=")
         

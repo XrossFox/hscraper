@@ -147,6 +147,17 @@ class Test(unittest.TestCase):
             self.assertEqual(list_of_urls[i][1], expected_output[i][1])
             self.assertEqual(list_of_urls[i][2], expected_output[i][2])
             
+    def test_scrap_for_images_deleted_img(self):
+        """
+        Tests if scrap_for_images can handle deleted images. Must return None in 3 expected indexes.
+        """
+        
+        post_url = "https://rule34.xxx/index.php?page=post&s=view&id=2985053"
+        
+        res = self.r34.scrap_for_images(post_url, 1, 1, 1)
+        
+        self.assertFalse(res)
+            
             
 
     def test_scrap_for_images_none(self):
