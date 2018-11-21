@@ -50,9 +50,14 @@ class EhenScraper(plugin_base.PluginBase):
                 
                 img_data = self.get_request(image[1], wait, retry, wait_retry)
                 
-                print(self.gen_downloading_string(f_out, image[0]+"."+image[2]))
-                self.write_to(f_out, "{}.{}".format(image[0],image[2]), img_data['payload'])
-                downloaded += 1
+                try:
+                    print(self.gen_downloading_string(f_out, image[0]+"."+image[2]))
+                    self.write_to(f_out, "{}.{}".format(image[0],image[2]), img_data['payload'])
+                    downloaded += 1
+                except:
+                    print(self.gen_img_not_found_string(image[1]))
+                    image_not_found.append(post)
+                    continue
                 
         failed = len(page_not_found) + len(image_not_found)
         list_failed = []
