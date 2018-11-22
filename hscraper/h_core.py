@@ -1,6 +1,3 @@
-import sys
-sys.path.append("./hscraper")
-
 from plugins.danbooru import danbooru_scraper
 from plugins.r34 import r34_scraper
 from plugins.ehen import ehen_scraper

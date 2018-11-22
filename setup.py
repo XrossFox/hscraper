@@ -7,8 +7,7 @@ setup(
     author='XrossFox',
     author_email='warhead_1090@hotmail.com',
     license='MIT',
-    packages=["hscraper","hscraper.plugins","hscraper.plugins.danbooru",
-                "hscraper.plugins.ehen","hscraper.plugins.r34","hscraper.plugins.hitomi"],
+    packages=find_packages(exclude=(["*.tests", "*.tests.*", "tests.*", "tests"])),
     install_requires=[
         'beautifulsoup4>=4.6.3',
         'requests>=2.19.1',
