@@ -1,21 +1,10 @@
 import sys
-from plugins import plugin_base
+sys.path.append("./hscraper")
+
 from plugins.danbooru import danbooru_scraper
 from plugins.r34 import r34_scraper
 from plugins.ehen import ehen_scraper
 from plugins.hitomi import hitomi_scraper
-
-"""
-sys.path.append('plugins')
-sys.path.append('plugins/danbooru')
-import danbooru_scraper
-sys.path.append('plugins/ehen')
-import ehen_scraper
-sys.path.append('plugins/r34')
-import r34_scraper
-sys.path.append('plugins/hitomi')
-"""
-#import hitomi_scraper
 
 import click
 
