@@ -1,3 +1,11 @@
+#Somehow, this is needed because when run from the .exe, it doesnt know where package is :P
+#So to find all the subpackages, we must add them to sys path during run time
+#This is achieved by appending the real path to this very script to the sys path
+import os
+import sys
+local = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(local)
+
 from plugins.danbooru import danbooru_scraper
 from plugins.r34 import r34_scraper
 from plugins.ehen import ehen_scraper
