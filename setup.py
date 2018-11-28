@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name='hscraper',
-    version='1.1.1',
+    version='1.1.2',
     description='A tool to rip galleries from ehentai, r34.xxx, danbooru.donmai and hitomi.la',
     url='https://github.com/XrossFox/hscraper',
     author='XrossFox',
