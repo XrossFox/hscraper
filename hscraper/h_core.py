@@ -3,6 +3,7 @@
 #This is achieved by appending the real path to this very script to the sys path
 import os
 import sys
+import traceback
 local = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(local)
 
@@ -21,20 +22,27 @@ class HCore():
         self.r34 = r34_scraper.R34Scraper()
         self.hit = hitomi_scraper.HitomiScraper()
     
-    def core_start(self, url, skip_from, pages, wait, retry, wait_retry, output):
+    def core_start(self, url, skip_from, pages, wait, retry, wait_retry, output, debug):
         """
         Starts the scraping and downloading process.
         """
-        if self.dan.validate_url(self.dan.clean_url(url)):
-            self.dan.start(url, pages, skip_from, wait, retry, wait_retry, output)
-        elif self.hen.validate_url(url):
-            self.hen.start(url, pages, skip_from, wait, retry, wait_retry, output)
-        elif self.r34.validate_url(url):
-            self.r34.start(url, pages, skip_from, wait, retry, wait_retry, output)
-        elif self.hit.validate_url(url):
-            self.hit.start(url=url, from_img=skip_from, to_img=pages, wait=wait, retry=retry, wait_retry=wait_retry, output=output)
-        else:
-            print("What the hell just happened? No valid url found :c")
+        try:
+            
+            if self.dan.validate_url(self.dan.clean_url(url)):
+                self.dan.start(url, pages, skip_from, wait, retry, wait_retry, output)
+            elif self.hen.validate_url(url):
+                self.hen.start(url, pages, skip_from, wait, retry, wait_retry, output)
+            elif self.r34.validate_url(url):
+                self.r34.start(url, pages, skip_from, wait, retry, wait_retry, output)
+            elif self.hit.validate_url(url):
+                self.hit.start(url=url, from_img=skip_from, to_img=pages, wait=wait, retry=retry, wait_retry=wait_retry, output=output)
+            else:
+                print("What the hell just happened? No valid url found :c")
+                
+        except Exception as w:
+            if debug:
+                traceback.print_exc(file=sys.stdout)
+                print(w)
                 
 @click.command()
 @click.option('-b',help="(Absolute) Path to a txt with multiple urls as: url,page[,skip_from]. One per line."+
@@ -46,7 +54,8 @@ class HCore():
 @click.option('-w',help="Wait time between http requests, defaut is 3.0 seconds.",default=3.0)
 @click.option('-r',help="Set number of retries. Default is 3.",default=3)
 @click.option('-x',help="Set wait time between retries. Default is 3.0 seconds.",default=3.0)
-def clickerino(b, u, f, p, o, w, r, x):
+@click.option('-d/--no-d', help="Debug mode", default=False)
+def clickerino(b, u, f, p, o, w, r, x, d):
     """Scraps images from the following sites: danbooru.donmai, r34.xxx, ehentai.org and hitomi.la"""
     if f:
         f = int(f)
@@ -60,15 +69,12 @@ def clickerino(b, u, f, p, o, w, r, x):
         exit()
 
     if b is not None:
-        batch_start(batch=b, wait=w, retry=r, wait_retry=x, output=o)
+        batch_start(batch=b, wait=w, retry=r, wait_retry=x, output=o, debug=d)
     else:
         core = HCore()
-        try:
-            core.core_start(url=u, pages=p, skip_from=f, wait=w, retry=r, wait_retry=x, output=o)
-        except Exception as w:
-            print(w)
+        core.core_start(url=u, pages=p, skip_from=f, wait=w, retry=r, wait_retry=x, output=o, debug=d)
 
-def batch_start(batch, wait, retry, wait_retry, output):
+def batch_start(batch, wait, retry, wait_retry, output, debug):
     """
     Calls core_start for each line in the text file.
     """
@@ -84,7 +90,7 @@ def batch_start(batch, wait, retry, wait_retry, output):
                 skip_from = int(tmp[2])
         except:
             skip_from = None
-        core.core_start(url=url, pages=pages, skip_from=skip_from, wait=wait, retry=retry, wait_retry=wait_retry, output=output)
+        core.core_start(url=url, pages=pages, skip_from=skip_from, wait=wait, retry=retry, wait_retry=wait_retry, output=output, debug=debug)
 
 if __name__ == '__main__':
     clickerino()
