@@ -37,7 +37,7 @@ class HCore():
             elif self.hit.validate_url(url):
                 self.hit.start(url=url, from_img=skip_from, to_img=pages, wait=wait, retry=retry, wait_retry=wait_retry, output=output)
             else:
-                print("What the hell just happened? No valid url found :c")
+                print("\nWhat the hell just happened? No valid url found :c")
                 
         except Exception as w:
             if debug:
@@ -90,7 +90,10 @@ def batch_start(batch, wait, retry, wait_retry, output, debug):
                 skip_from = int(tmp[2])
         except:
             skip_from = None
-        core.core_start(url=url, pages=pages, skip_from=skip_from, wait=wait, retry=retry, wait_retry=wait_retry, output=output, debug=debug)
+        try:
+            core.core_start(url=url, pages=pages, skip_from=skip_from, wait=wait, retry=retry, wait_retry=wait_retry, output=output, debug=debug)
+        except:
+            continue
 
 if __name__ == '__main__':
     clickerino()
