@@ -44,7 +44,7 @@ class EhenScraper(plugin_base.PluginBase):
                 image = self.scrap_for_images(post, wait, retry, wait_retry)
 
                 if image == None:
-                    print(self.gen_img_not_found_string(image[1]))
+                    print(self.gen_img_not_found_string(post))
                     image_not_found.append(post)
                     continue
                 

@@ -193,6 +193,17 @@ class Test(unittest.TestCase):
         
         self.assertEqual(response, None)
         
+    def test_scrap_for_images_swf(self):
+        """
+        Tests if scrap_for_images rcan manages when one post is for an swf.
+        It must return None.
+        """
+        
+        url = "https://danbooru.donmai.us/posts/1909036"
+        response = self.dan.scrap_for_images(url, 1, 1, 1)
+        
+        self.assertEqual(response, None)
+        
             
     def test_gen_gal_name(self):
         """
@@ -244,6 +255,21 @@ class Test(unittest.TestCase):
         output = "./"
         
         self.dan.start(url, pages, 2, wait, retry, wait_retry, output)
+        
+    def test_start_2(self):
+        """
+        Tests the whole process, given a valid url, one of the posts in this page has an swf, it must skip it
+        """
+        
+        url = "https://danbooru.donmai.us/posts?tags=metroid"
+        pages = 58
+        skip_from = 57
+        wait = 3
+        retry = 3
+        wait_retry = 3
+        output = "./"
+        
+        self.dan.start(url, pages, skip_from, wait, retry, wait_retry, output)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

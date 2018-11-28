@@ -45,7 +45,7 @@ class Danbooru(plugin_base.PluginBase):
                 image = self.scrap_for_images(post, wait, retry, wait_retry)
 
                 if image == None:
-                    print(self.gen_img_not_found_string(image[1]))
+                    print(self.gen_img_not_found_string(post))
                     image_not_found.append(post)
                     continue
                 
@@ -111,13 +111,16 @@ class Danbooru(plugin_base.PluginBase):
         
         soup = BeautifulSoup(html['payload'], "html.parser")
         
-        resize = soup.find(id="image-resize-link")
-        
-        if resize:
-            img_url = resize.get("href")
-        else:
-            img_tag = soup.find(id="image")
-            img_url = img_tag.get("src")
+        try:
+            resize = soup.find(id="image-resize-link")
+            
+            if resize:
+                img_url = resize.get("href")
+            else:
+                img_tag = soup.find(id="image")
+                img_url = img_tag.get("src")
+        except:
+            return None
         
         name = url.split("/")
         extension = img_url.split(".")
