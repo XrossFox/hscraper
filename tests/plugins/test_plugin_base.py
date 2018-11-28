@@ -93,6 +93,23 @@ class Test(unittest.TestCase):
         self.pb.create_dir(path="c:\\test", name="test_directory")
         
         self.assertTrue(os.path.exists("c:\\test\\test_directory"))
+    
+    def test_create_dir_3(self):
+        """
+        Tests the creation of a directory. Its expected that all white spaces are replaced by '_'
+        """
+        self.pb.create_dir(path="c:\\test", name="test directory 3 ")
+        
+        self.assertTrue(os.path.exists("c:\\test\\test_directory_3_"))
+    
+    def test_create_dir_4(self):
+        """
+        Tests the creation of a directory for the followin name: [Pixiv] Laserflip / Rosaline (14095911).
+        It is expected that it removes invalid chars like slashes
+        """
+        
+        self.pb.create_dir(path="c:\\test", name="[Pixiv] Laserflip / Rosaline (14095911)")
+        self.assertTrue(os.path.exists("c:\\test\\[Pixiv]_Laserflip__Rosaline_(14095911)"))
         
     def test_create_invalid_char_dir(self):
         """

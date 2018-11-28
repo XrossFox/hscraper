@@ -53,7 +53,8 @@ class PluginBase(ABC):
 
         path = path.replace("\\","/")
         path = re.sub(r"[<>\"|\?\*^]+", "", path)
-        name = re.sub(r"[<>:\"\\|\?\*^]+", "", name)
+        name = re.sub(r"[<>:/\"\\|\?\*^]+", "", name)
+        name = name.replace(" ", "_")
         
         if not path.endswith("/"):
             path = path+"/"
