@@ -95,6 +95,16 @@ class Test(unittest.TestCase):
         
         self.assertFalse(self.dan.validate_url(bad_url))
         
+    def test_validate_url_2(self):
+        """
+        Tests if it validates urls using a regular expression
+        """
+        
+        given_urls = "https://danbooru.donmai.us/posts?tags=female_my_unit_%28fire_emblem_if%29"
+        
+        self.assertTrue(self.dan.validate_url(given_urls))
+        
+        
     def test_validate_url_substring(self):
         """
         Tests that there is only an url present, and not in a form of a substring.
